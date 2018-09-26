@@ -12,36 +12,15 @@ int main(int ac, char **av)
     FILE *fp;                         /* Input file handler */
     size_t size;                      /* Number of bytes read */
     char *filename;                   /* Input file name */
-    char *typename;                   /* Input type name*/
-    asn_TYPE_descriptor_t descriptor; /* Descriptor for parsing bytes */
 
-    if (ac != 3)
+    if (ac != 2)
     {
-        fprintf(stderr, "Usage: %s <Type> <file.ber>\n", av[0]);
+        fprintf(stderr, "Usage: %s <file.ber>\n", av[0]);
         exit(1);
     }
     else
     {
-        typename = av[1];
-        filename = av[2];
-    }
-
-    if (0 == strcmp("Query", typename))
-    {
-        descriptor = asn_DEF_Query;
-    }
-    else if (0 == strcmp("Fault", typename))
-    {
-        descriptor = asn_DEF_Fault;
-    }
-    else if (0 == strcmp("Message", typename))
-    {
-        descriptor = asn_DEF_Message;
-    }
-    else
-    {
-        fprintf(stderr, "Invalid type: %s \n", typename);
-        exit(1);
+        filename = av[1];
     }
 
     /* Open input file as read-only binary */
@@ -60,14 +39,14 @@ int main(int ac, char **av)
         exit(1);
     }
     // decode
-    rval = ber_decode(0, &descriptor, (void **)&instance, buf, size);
+    rval = ber_decode(0, &asn_DEF_Message, &instance, buf, size);
     if (rval.code != RC_OK)
     {
         fprintf(stderr, "%s: Broken encoding at byte %ld\n ",
-                filename, (long)rval.consumed);
+                filename, rval.consumed);
         exit(1);
     }
     /* Print as XML */
-    xer_fprint(stdout, &descriptor, instance);
+    xer_fprint(stdout, &asn_DEF_Message, instance);
     return 0;
 }

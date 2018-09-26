@@ -92,7 +92,6 @@ ASN_MODULE_HEADERS+=per_encoder.h
 ASN_MODULE_SOURCES+=per_encoder.c
 ASN_MODULE_HEADERS+=per_opentype.h
 ASN_MODULE_SOURCES+=per_opentype.c
-ASN_CONVERTER_SOURCES+=decoder.c
 
 
 lib_LTLIBRARIES=libsomething.la
@@ -100,14 +99,17 @@ libsomething_la_SOURCES=$(ASN_MODULE_SOURCES) $(ASN_MODULE_HEADERS)
 
 # This file may be used as an input for make(3)
 # Remove the lines below to convert it into a pure .am file
-TARGET = decoder
+# TARGET = decoder
 CFLAGS += -I.
-OBJS=${ASN_MODULE_SOURCES:.c=.o} ${ASN_CONVERTER_SOURCES:.c=.o}
+OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
-all: $(TARGET)
+all: decode encode
 
-$(TARGET): ${OBJS}
-	$(CC) $(CFLAGS) -o $(TARGET) ${OBJS} $(LDFLAGS) $(LIBS)
+encode: ${OBJS} encode.c
+	$(CC) $(CFLAGS) -o encode encode.c ${OBJS} $(LDFLAGS) $(LIBS)
+
+decode: ${OBJS} decode.c
+	$(CC) $(CFLAGS) -o decode decode.c ${OBJS} $(LDFLAGS) $(LIBS)
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -116,7 +118,7 @@ $(TARGET): ${OBJS}
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f $(TARGET)
+	rm -f encode decode
 	rm -f $(OBJS)
 
 regen: regenerate-from-asn1-source
