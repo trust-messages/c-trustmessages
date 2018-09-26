@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <Fault.h>
+#include <FormatRequest.h>
+#include <DataRequest.h>
+#include <Message.h>
 
 /* Write the encoded output into some FILE stream. */
 static int write_out(const void *buffer, size_t size, void *app_key)
@@ -10,24 +12,69 @@ static int write_out(const void *buffer, size_t size, void *app_key)
     return (wrote == size) ? 0 : -1;
 }
 
-int main(int ac, char **av)
+void create_format_request(Message_t *instance)
 {
-    Fault_t *instance;                     /* Type to encode */
-    asn_enc_rval_t ec;                     /* Encoder return value */
-    instance = calloc(1, sizeof(Fault_t)); /* not malloc! */
-    if (!instance)
+    FormatRequest_t *payload = calloc(1, sizeof(FormatRequest_t));
+    if (!payload)
+    {
+        perror("calloc() failed");
+        exit(1);
+    }
+    *payload = 73;
+    instance->payload.present = payload_PR_format_request;
+    instance->payload.choice.format_request = *payload;
+}
+
+void create_data_request(Message_t *instance)
+{
+    DataRequest_t *payload = calloc(1, sizeof(DataRequest_t));
+    if (!payload)
     {
         perror("calloc() failed");
         exit(1);
     }
 
-    PrintableString_t *message = calloc(1, sizeof(PrintableString_t));
-    message->buf = "Hello World!";
-    message->size = 12;
+    payload->rid = 10;
+    payload->type_rq = type_rq_trust;
 
-    instance->message = *message;
-    instance->rid = 23;
-    /* BER encode the data if filename is given */
+    Query_t *query = calloc(1, sizeof(Query_t));
+    if (!query)
+    {
+        perror("calloc() failed");
+        exit(1);
+    }
+    
+    Service_t *service = calloc(1, sizeof(Service_t));
+    if (!service)
+    {
+        perror("calloc() failed");
+        exit(1);
+    }
+    service->buf = "seller";
+    service->size = 6;
+    query->choice.con.value.present = Value_PR_service;
+    query->choice.con.value.choice.service = *service;
+    query->choice.con.operator_c = operator_c_eq;
+    query->present = Query_PR_con;
+    payload->query = *query;
+
+    instance->payload.present = payload_PR_data_request;
+    instance->payload.choice.data_request = *payload;
+}
+
+int main(int ac, char **av)
+{
+    Message_t *instance = calloc(1, sizeof(Message_t));
+    if (!instance)
+    {
+        perror("calloc() failed");
+        exit(1);
+    }
+    instance->version = 1;
+
+    // create_format_request(instance);
+    create_data_request(instance);
+
     if (ac < 2)
     {
         fprintf(stderr, "Specify filename for BER output\n");
@@ -41,22 +88,24 @@ int main(int ac, char **av)
             perror(filename);
             exit(1);
         }
-        /* Encode the Rectangle type as BER (DER) */
-        ec = der_encode(&asn_DEF_Fault, instance, write_out, fp);
+
+        asn_enc_rval_t ec = der_encode(&asn_DEF_Message, instance, write_out, fp);
         fclose(fp);
         if (ec.encoded == -1)
         {
-            fprintf(stderr, "Could not encode Rectangle(at %s)\n",
+            fprintf(stderr, "Could not encode, error at %s\n",
                     ec.failed_type ? ec.failed_type->name : "unknown");
             exit(1);
         }
         else
         {
-            fprintf(stderr, "Created %s with BER encoded Rectangle\n", filename);
+            fprintf(stderr, "Created %s with DER encodeding\n", filename);
         }
     }
 
-    /* Also print the constructed Rectangle XER encoded (XML) */
-    xer_fprint(stdout, &asn_DEF_Fault, instance);
-    return 0; /* Encoding finished successfully */
+    // xer_fprint(stdout, &asn_DEF_Message, instance);
+    asn_fprint(stdout, &asn_DEF_Message, instance);
+
+    // ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_Message, instance);
+    return 0;
 }
