@@ -22,7 +22,8 @@ void create_format_request(Message_t *message)
 
 void create_data_request(Message_t *message)
 {
-    Service_t service = {strdup("seller"), 6};
+    const char *service_name = "Hello Service";
+    Service_t service = {strdup(service_name), strlen(service_name)};
     Value_t value = {Value_PR_service, .choice.service = service};
     Constraint_t con = {operator_c_eq, value};
     Query_t query = {Query_PR_con, con};
