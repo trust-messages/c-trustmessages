@@ -12,68 +12,49 @@ static int write_out(const void *buffer, size_t size, void *app_key)
     return (wrote == size) ? 0 : -1;
 }
 
-void create_format_request(Message_t *instance)
+void create_format_request(Message_t *message)
 {
-    FormatRequest_t *payload = calloc(1, sizeof(FormatRequest_t));
-    if (!payload)
-    {
-        perror("calloc() failed");
-        exit(1);
-    }
-    *payload = 73;
-    instance->payload.present = payload_PR_format_request;
-    instance->payload.choice.format_request = *payload;
+    FormatRequest_t payload = 73;
+    message->payload.present = payload_PR_format_request;
+    message->payload.choice.format_request = payload;
+    message->version = 1;
 }
 
-void create_data_request(Message_t *instance)
+void create_data_request(Message_t *message)
 {
-    DataRequest_t *payload = calloc(1, sizeof(DataRequest_t));
-    if (!payload)
-    {
-        perror("calloc() failed");
-        exit(1);
-    }
+    Service_t service = {"seller", 6};
 
-    payload->rid = 10;
-    payload->type_rq = type_rq_trust;
+    Query_t query;
+    query.present = Query_PR_con;
+    query.choice.con.value.present = Value_PR_service;
+    query.choice.con.operator_c = operator_c_eq;
+    query.choice.con.value.choice.service = service;
 
-    Query_t *query = calloc(1, sizeof(Query_t));
-    if (!query)
-    {
-        perror("calloc() failed");
-        exit(1);
-    }
-    
-    Service_t *service = calloc(1, sizeof(Service_t));
-    if (!service)
-    {
-        perror("calloc() failed");
-        exit(1);
-    }
-    service->buf = "seller";
-    service->size = 6;
-    query->choice.con.value.present = Value_PR_service;
-    query->choice.con.value.choice.service = *service;
-    query->choice.con.operator_c = operator_c_eq;
-    query->present = Query_PR_con;
-    payload->query = *query;
+    DataRequest_t request;
+    request.rid = 10;
+    request.type_rq = type_rq_trust;
+    request.query = query;
 
-    instance->payload.present = payload_PR_data_request;
-    instance->payload.choice.data_request = *payload;
+    message->payload.choice.data_request = request;
+    message->payload.present = payload_PR_data_request;
+    message->version = 1;
 }
 
 int main(int ac, char **av)
 {
-    Message_t *instance = calloc(1, sizeof(Message_t));
-    if (!instance)
+    // printf("Message_t size = %lu\n", sizeof(Message_t));
+    // 240 ... hum?
+
+    // Message_t message;
+    Message_t *message = calloc(1, sizeof(Message_t));
+    if (!message)
     {
         perror("calloc() failed");
         exit(1);
     }
-    instance->version = 1;
 
-    // create_format_request(instance);
-    create_data_request(instance);
+    // create_format_request(message);
+    create_data_request(message);
 
     if (ac < 2)
     {
@@ -89,7 +70,7 @@ int main(int ac, char **av)
             exit(1);
         }
 
-        asn_enc_rval_t ec = der_encode(&asn_DEF_Message, instance, write_out, fp);
+        asn_enc_rval_t ec = der_encode(&asn_DEF_Message, message, write_out, fp);
         fclose(fp);
         if (ec.encoded == -1)
         {
@@ -103,9 +84,9 @@ int main(int ac, char **av)
         }
     }
 
-    // xer_fprint(stdout, &asn_DEF_Message, instance);
-    asn_fprint(stdout, &asn_DEF_Message, instance);
+    // xer_fprint(stdout, &asn_DEF_Message, message);
+    asn_fprint(stdout, &asn_DEF_Message, message);
 
-    // ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_Message, instance);
+    // ASN_STRUCT_FREE(asn_DEF_Message, message);
     return 0;
 }
