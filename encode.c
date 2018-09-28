@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <FormatRequest.h>
+#include <FormatResponse.h>
 #include <DataRequest.h>
+#include <Fault.h>
 #include <Message.h>
 
 /* Write the encoded output into some FILE stream. */
@@ -61,6 +63,40 @@ void create_data_request_exp(Message_t *message)
     message->version = 1;
 }
 
+void create_format_response(Message_t *message)
+{
+    const char *def_asn1 = "Here be ASN.1 type definitions";
+    const u_int8_t def_id[3] = {1, 2, 3};
+    const size_t def_len = 3;
+
+    FormatResponse_t payload;
+    payload.rid = 1;
+
+    payload.assessment_id.size = def_len;
+    payload.assessment_id.buf = calloc(def_len, sizeof(uint8_t));
+    memcpy(payload.assessment_id.buf, def_id, def_len);
+    payload.assessment_def = (PrintableString_t){strdup(def_asn1), strlen(def_asn1)};
+
+    payload.trust_id.size = def_len;
+    payload.trust_id.buf = calloc(def_len, sizeof(uint8_t));
+    memcpy(payload.trust_id.buf, def_id, def_len);
+    payload.trust_def = (PrintableString_t){strdup(def_asn1), strlen(def_asn1)};
+
+    message->payload.present = payload_PR_format_response;
+    message->payload.choice.format_response = payload;
+    message->version = 1;
+}
+
+void create_fault(Message_t *message)
+{
+    const char *description = "We're out of beer, sorry.";
+
+    Fault_t payload = {1, {strdup(description), strlen(description)}};
+    message->payload.present = payload_PR_fault;
+    message->payload.choice.fault = payload;
+    message->version = 1;
+}
+
 int main(int ac, char **av)
 {
     // printf("Message_t size = %lu\n", sizeof(Message_t));
@@ -73,8 +109,10 @@ int main(int ac, char **av)
     }
 
     // create_format_request(message);
-    create_data_request(message);
+    // create_data_request(message);
     // create_data_request_exp(message);
+    // create_format_response(message);
+    create_fault(message);
 
     if (ac < 2)
     {
