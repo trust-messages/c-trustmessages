@@ -181,6 +181,7 @@ int main(int ac, char **av)
 
         asn_enc_rval_t ec = der_encode(&asn_DEF_Message, message, write_out, fp);
         // asn_enc_rval_t ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
+        // asn_enc_rval_t ec = uper_encode(&asn_DEF_Message, message, write_out, fp);
         fclose(fp);
         if (ec.encoded == -1)
         {

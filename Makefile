@@ -133,5 +133,5 @@ clean:
 regen: regenerate-from-asn1-source
 
 regenerate-from-asn1-source:
-	asn1c -fcompound-names ../asn1-trustmessages/messages.asn ../asn1-trustmessages/formats.asn
+	asn1c -fcompound-names -gen-PER ../asn1-trustmessages/messages.asn ../asn1-trustmessages/formats.asn
 
