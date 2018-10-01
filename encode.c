@@ -5,6 +5,10 @@
 #include <DataRequest.h>
 #include <Fault.h>
 #include <Message.h>
+#include <QTM.h>
+#include <SL.h>
+#include <stdlib.h>
+#include <time.h>
 
 /* Write the encoded output into some FILE stream. */
 static int write_out(const void *buffer, size_t size, void *app_key)
@@ -94,7 +98,7 @@ void create_fault(Message_t *message)
 
 void create_data_response(Message_t *message)
 {
-    const int def_id[] = {1, 2, 3};
+    const int def_id[] = {1, 1, 1};
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
     message->version = 1;
@@ -104,14 +108,17 @@ void create_data_response(Message_t *message)
     OBJECT_IDENTIFIER_set_arcs(&message->payload.choice.data_response.format, def_id, sizeof(def_id[0]), def_len);
     OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
 
-    for (size_t i = 0; i < 10; i++)
+    // init PRG
+    srand48(time(NULL));
+
+    for (size_t i = 0; i < 2000; i++)
     {
-        for (size_t j = 0; j < 10; j++)
+        for (size_t j = 0; j < 2000; j++)
         {
-            if (j == i)
+            /*if (j == i)
             {
                 continue;
-            }
+            }*/
 
             char source[10], target[10];
             sprintf(source, "agent-%03ld", i);
@@ -121,14 +128,20 @@ void create_data_response(Message_t *message)
             OCTET_STRING_fromString(&r->source, source);
             OCTET_STRING_fromString(&r->target, target);
             OCTET_STRING_fromString(&r->service, "seller");
-            r->date = 10* i + j;
+            r->date = 10 * i + j;
 
-            // simulated value
-            Service_t *v = calloc(1, sizeof(Service_t));
-            OCTET_STRING_fromString(v, "very good");
-            ANY_fromType(&r->value, &asn_DEF_Service, v);
-            ASN_STRUCT_FREE(asn_DEF_Service, v);
+            // SL
+            /* SL_t *v = calloc(1, sizeof(SL_t));
+            v->b = drand48();
+            v->d = (1.0 - v->b) * drand48();
+            v->u = 1 - v->b - v->d;
+            ANY_fromType(&r->value, &asn_DEF_SL, v);
+            asn_fprint(stdout, &asn_DEF_SL, v);
+            ASN_STRUCT_FREE(asn_DEF_SL, v);*/
 
+            // QTM
+            QTM_t v = QTM_neutral;
+            ANY_fromType(&r->value, &asn_DEF_QTM, &v);
             ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
         }
     }
@@ -167,6 +180,7 @@ int main(int ac, char **av)
         }
 
         asn_enc_rval_t ec = der_encode(&asn_DEF_Message, message, write_out, fp);
+        // asn_enc_rval_t ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
         fclose(fp);
         if (ec.encoded == -1)
         {
@@ -194,7 +208,7 @@ int main(int ac, char **av)
     }
 
     // xer_fprint(stdout, &asn_DEF_Message, message);
-    asn_fprint(stdout, &asn_DEF_Message, message);
+    // asn_fprint(stdout, &asn_DEF_Message, message);
 
     ASN_STRUCT_FREE(asn_DEF_Message, message);
     // ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_Message, &message);
