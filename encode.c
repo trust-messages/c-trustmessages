@@ -92,6 +92,48 @@ void create_fault(Message_t *message)
     OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
 }
 
+void create_data_response(Message_t *message)
+{
+    const int def_id[] = {1, 2, 3};
+    const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
+
+    message->version = 1;
+    message->payload.present = payload_PR_data_response;
+    message->payload.choice.data_response.rid = 11;
+    message->payload.choice.data_response.type_rs = type_rs_assessment;
+    OBJECT_IDENTIFIER_set_arcs(&message->payload.choice.data_response.format, def_id, sizeof(def_id[0]), def_len);
+    OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
+
+    for (size_t i = 0; i < 10; i++)
+    {
+        for (size_t j = 0; j < 10; j++)
+        {
+            if (j == i)
+            {
+                continue;
+            }
+
+            char source[10], target[10];
+            sprintf(source, "agent-%03ld", i);
+            sprintf(target, "agent-%03ld", j);
+
+            Rating_t *r = calloc(1, sizeof(Rating_t));
+            OCTET_STRING_fromString(&r->source, source);
+            OCTET_STRING_fromString(&r->target, target);
+            OCTET_STRING_fromString(&r->service, "seller");
+            r->date = 10* i + j;
+
+            // simulated value
+            Service_t *v = calloc(1, sizeof(Service_t));
+            OCTET_STRING_fromString(v, "very good");
+            ANY_fromType(&r->value, &asn_DEF_Service, v);
+            ASN_STRUCT_FREE(asn_DEF_Service, v);
+
+            ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
+        }
+    }
+}
+
 int main(int ac, char **av)
 {
     // printf("Message_t size = %lu\n", sizeof(Message_t));
@@ -105,9 +147,10 @@ int main(int ac, char **av)
 
     // create_format_request(message);
     // create_data_request(message);
-    create_data_request_exp(message);
+    // create_data_request_exp(message);
     // create_format_response(message);
     // create_fault(message);
+    create_data_response(message);
 
     if (ac < 2)
     {
