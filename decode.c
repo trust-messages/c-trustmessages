@@ -77,10 +77,10 @@ int main(int ac, char **av)
         exit(1);
     }
 
-    time_decode(message, buf, size);
+    // time_decode(message, buf, size);
 
     /* Print */
-    // xer_fprint(stdout, &asn_DEF_Message, message);
+    xer_fprint(stdout, &asn_DEF_Message, message);
     // asn_fprint(stdout, &asn_DEF_Message, message);
     ASN_STRUCT_FREE(asn_DEF_Message, message);
     return 0;

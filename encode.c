@@ -17,7 +17,7 @@ static int write_out(const void *buffer, size_t size, void *app_key)
 void create_format_request(Message_t *message)
 {
     message->version = 1;
-    message->payload.present = payload_PR_format_request;
+    message->payload.present = Message__payload_PR_format_request;
     message->payload.choice.format_request = 73;
 }
 
@@ -26,11 +26,11 @@ void create_data_request(Message_t *message)
     const char *service_name = "Hello Service";
 
     message->version = 1;
-    message->payload.present = payload_PR_data_request;
+    message->payload.present = Message__payload_PR_data_request;
     message->payload.choice.data_request.rid = 10;
-    message->payload.choice.data_request.type_rq = type_rq_assessment;
+    message->payload.choice.data_request.type_rq = DataRequest__type_rq_assessment;
     message->payload.choice.data_request.query.present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.con.operator_c = Constraint__operator_c_eq;
     message->payload.choice.data_request.query.choice.con.value.present = Value_PR_service;
     OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.con.value.choice.service, service_name);
 }
@@ -38,25 +38,25 @@ void create_data_request(Message_t *message)
 void create_data_request_exp(Message_t *message)
 {
     message->version = 1;
-    message->payload.present = payload_PR_data_request;
+    message->payload.present = Message__payload_PR_data_request;
     message->payload.choice.data_request.rid = 11;
 
     // expression
     message->payload.choice.data_request.query.present = Query_PR_exp;
     message->payload.choice.data_request.query.choice.exp = calloc(1, sizeof(Expression_t));
-    message->payload.choice.data_request.query.choice.exp->operator_e = operator_e_or;
+    message->payload.choice.data_request.query.choice.exp->operator_e = Expression__operator_e_or;
 
     // left operand
     message->payload.choice.data_request.query.choice.exp->left = calloc(1, sizeof(Query_t));
     message->payload.choice.data_request.query.choice.exp->left->present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.exp->left->choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->left->choice.con.operator_c = Constraint__operator_c_eq;
     message->payload.choice.data_request.query.choice.exp->left->choice.con.value.present = Value_PR_date;
     message->payload.choice.data_request.query.choice.exp->left->choice.con.value.choice.date = 123;
 
     // right operand
     message->payload.choice.data_request.query.choice.exp->right = calloc(1, sizeof(Query_t));
     message->payload.choice.data_request.query.choice.exp->right->present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.exp->right->choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->right->choice.con.operator_c = Constraint__operator_c_eq;
     message->payload.choice.data_request.query.choice.exp->right->choice.con.value.present = Value_PR_service;
     OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.exp->right->choice.con.value.choice.service, "My Service!");
 }
@@ -68,7 +68,7 @@ void create_format_response(Message_t *message)
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
     message->version = 1;
-    message->payload.present = payload_PR_format_response;
+    message->payload.present = Message__payload_PR_format_response;
     message->payload.choice.format_response.rid = 1;
 
     OBJECT_IDENTIFIER_set_arcs(
@@ -87,7 +87,7 @@ void create_fault(Message_t *message)
     char *description = "We're out of beer, sorry.";
 
     message->version = 1;
-    message->payload.present = payload_PR_fault;
+    message->payload.present = Message__payload_PR_fault;
     message->payload.choice.fault.rid = 1;
     OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
 }
@@ -98,9 +98,9 @@ void create_data_response(Message_t *message)
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
     message->version = 1;
-    message->payload.present = payload_PR_data_response;
+    message->payload.present = Message__payload_PR_data_response;
     message->payload.choice.data_response.rid = 11;
-    message->payload.choice.data_response.type_rs = type_rs_assessment;
+    message->payload.choice.data_response.type_rs = DataResponse__type_rs_assessment;
     OBJECT_IDENTIFIER_set_arcs(&message->payload.choice.data_response.format, def_id, sizeof(def_id[0]), def_len);
     OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
 
