@@ -13,7 +13,9 @@ ASN_MODULE_SOURCES=	\
 	Format.c	\
 	Entity.c	\
 	Service.c	\
-	BinaryTime.c
+	BinaryTime.c	\
+	QTM.c	\
+	SL.c
 
 ASN_MODULE_HEADERS=	\
 	Message.h	\
@@ -30,7 +32,9 @@ ASN_MODULE_HEADERS=	\
 	Format.h	\
 	Entity.h	\
 	Service.h	\
-	BinaryTime.h
+	BinaryTime.h	\
+	QTM.h	\
+	SL.h
 
 ASN_MODULE_HEADERS+=ANY.h
 ASN_MODULE_SOURCES+=ANY.c
@@ -40,10 +44,14 @@ ASN_MODULE_SOURCES+=INTEGER.c
 ASN_MODULE_SOURCES+=NativeEnumerated.c
 ASN_MODULE_HEADERS+=NativeInteger.h
 ASN_MODULE_SOURCES+=NativeInteger.c
+ASN_MODULE_HEADERS+=NativeReal.h
+ASN_MODULE_SOURCES+=NativeReal.c
+ASN_MODULE_HEADERS+=REAL.h
 ASN_MODULE_HEADERS+=OBJECT_IDENTIFIER.h
 ASN_MODULE_SOURCES+=OBJECT_IDENTIFIER.c
 ASN_MODULE_HEADERS+=PrintableString.h
 ASN_MODULE_SOURCES+=PrintableString.c
+ASN_MODULE_SOURCES+=REAL.c
 ASN_MODULE_HEADERS+=asn_SEQUENCE_OF.h
 ASN_MODULE_SOURCES+=asn_SEQUENCE_OF.c
 ASN_MODULE_HEADERS+=asn_SET_OF.h
@@ -107,10 +115,10 @@ OBJS=${ASN_MODULE_SOURCES:.c=.o}
 all: decode encode
 
 encode: ${OBJS} encode.c
-	$(CC) $(CFLAGS) -o encode encode.c ${OBJS} $(LDFLAGS) $(LIBS)
+	$(CC) $(CFLAGS) -o encode encode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
 
 decode: ${OBJS} decode.c
-	$(CC) $(CFLAGS) -o decode decode.c ${OBJS} $(LDFLAGS) $(LIBS)
+	$(CC) $(CFLAGS) -o decode decode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -125,5 +133,5 @@ clean:
 regen: regenerate-from-asn1-source
 
 regenerate-from-asn1-source:
-	asn1c -fcompound-names ../asn1-trustmessages/messages.asn
+	asn1c -fcompound-names ../asn1-trustmessages/messages.asn ../asn1-trustmessages/formats.asn
 
