@@ -16,85 +16,80 @@ static int write_out(const void *buffer, size_t size, void *app_key)
 
 void create_format_request(Message_t *message)
 {
-    FormatRequest_t payload = 73;
-    message->payload.present = payload_PR_format_request;
-    message->payload.choice.format_request = payload;
     message->version = 1;
+    message->payload.present = payload_PR_format_request;
+    message->payload.choice.format_request = 73;
 }
 
 void create_data_request(Message_t *message)
 {
     const char *service_name = "Hello Service";
-    Service_t service = {strdup(service_name), strlen(service_name)};
-    Value_t value = {Value_PR_service, .choice.service = service};
-    Constraint_t con = {operator_c_eq, value};
-    Query_t query = {Query_PR_con, con};
-    DataRequest_t request = {10, type_rq_assessment, query};
 
-    message->payload.choice.data_request = request;
-    message->payload.present = payload_PR_data_request;
     message->version = 1;
+    message->payload.present = payload_PR_data_request;
+    message->payload.choice.data_request.rid = 10;
+    message->payload.choice.data_request.type_rq = type_rq_assessment;
+    message->payload.choice.data_request.query.present = Query_PR_con;
+    message->payload.choice.data_request.query.choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.con.value.present = Value_PR_service;
+    OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.con.value.choice.service, service_name);
 }
 
 void create_data_request_exp(Message_t *message)
 {
-    Value_t left_value = {Value_PR_date, .choice.date = 123};
-    Constraint_t left_con = {operator_c_eq, left_value};
-    Query_t *left_query = calloc(1, sizeof(Query_t));
-    left_query->present = Query_PR_con;
-    left_query->choice.con = left_con;
-
-    Value_t right_value = {Value_PR_date, .choice.date = 321};
-    Constraint_t right_con = {operator_c_eq, right_value};
-    Query_t *right_query = calloc(1, sizeof(Query_t));
-    right_query->present = Query_PR_con;
-    right_query->choice.con = right_con;
-
-    Expression_t *expression = calloc(1, sizeof(Expression_t));
-    expression->operator_e = operator_e_or;
-    expression->left = left_query;
-    expression->right = right_query;
-
-    Query_t query = {Query_PR_exp, .choice.exp = expression};
-    DataRequest_t request = {10, type_rq_trust, query};
-
-    message->payload.choice.data_request = request;
-    message->payload.present = payload_PR_data_request;
     message->version = 1;
+    message->payload.present = payload_PR_data_request;
+    message->payload.choice.data_request.rid = 11;
+
+    // expression
+    message->payload.choice.data_request.query.present = Query_PR_exp;
+    message->payload.choice.data_request.query.choice.exp = calloc(1, sizeof(Expression_t));
+    message->payload.choice.data_request.query.choice.exp->operator_e = operator_e_or;
+
+    // left operand
+    message->payload.choice.data_request.query.choice.exp->left = calloc(1, sizeof(Query_t));
+    message->payload.choice.data_request.query.choice.exp->left->present = Query_PR_con;
+    message->payload.choice.data_request.query.choice.exp->left->choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->left->choice.con.value.present = Value_PR_date;
+    message->payload.choice.data_request.query.choice.exp->left->choice.con.value.choice.date = 123;
+
+    // right operand
+    message->payload.choice.data_request.query.choice.exp->right = calloc(1, sizeof(Query_t));
+    message->payload.choice.data_request.query.choice.exp->right->present = Query_PR_con;
+    message->payload.choice.data_request.query.choice.exp->right->choice.con.operator_c = operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->right->choice.con.value.present = Value_PR_service;
+    OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.exp->right->choice.con.value.choice.service, "My Service!");
 }
 
 void create_format_response(Message_t *message)
 {
     const char *def_asn1 = "Here be ASN.1 type definitions";
-    const u_int8_t def_id[3] = {1, 2, 3};
-    const size_t def_len = 3;
+    const int def_id[] = {1, 2, 3};
+    const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
-    FormatResponse_t payload;
-    payload.rid = 1;
-
-    payload.assessment_id.size = def_len;
-    payload.assessment_id.buf = calloc(def_len, sizeof(uint8_t));
-    memcpy(payload.assessment_id.buf, def_id, def_len);
-    payload.assessment_def = (PrintableString_t){strdup(def_asn1), strlen(def_asn1)};
-
-    payload.trust_id.size = def_len;
-    payload.trust_id.buf = calloc(def_len, sizeof(uint8_t));
-    memcpy(payload.trust_id.buf, def_id, def_len);
-    payload.trust_def = (PrintableString_t){strdup(def_asn1), strlen(def_asn1)};
-
-    message->payload.present = payload_PR_format_response;
-    message->payload.choice.format_response = payload;
     message->version = 1;
+    message->payload.present = payload_PR_format_response;
+    message->payload.choice.format_response.rid = 1;
+
+    OBJECT_IDENTIFIER_set_arcs(
+        &message->payload.choice.format_response.assessment_id,
+        def_id, sizeof(def_id[0]), def_len);
+    OCTET_STRING_fromString(&message->payload.choice.format_response.assessment_def, def_asn1);
+
+    OBJECT_IDENTIFIER_set_arcs(
+        &message->payload.choice.format_response.trust_id,
+        def_id, sizeof(def_id[0]), def_len);
+    OCTET_STRING_fromString(&message->payload.choice.format_response.trust_def, def_asn1);
 }
 
 void create_fault(Message_t *message)
 {
-    const char *description = "We're out of beer, sorry.";
+    char *description = "We're out of beer, sorry.";
 
-    Fault_t payload = {1, {strdup(description), strlen(description)}};
-    message->payload.present = payload_PR_fault;
-    message->payload.choice.fault = payload;
     message->version = 1;
+    message->payload.present = payload_PR_fault;
+    message->payload.choice.fault.rid = 1;
+    OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
 }
 
 int main(int ac, char **av)
@@ -110,9 +105,9 @@ int main(int ac, char **av)
 
     // create_format_request(message);
     // create_data_request(message);
-    // create_data_request_exp(message);
+    create_data_request_exp(message);
     // create_format_response(message);
-    create_fault(message);
+    // create_fault(message);
 
     if (ac < 2)
     {
