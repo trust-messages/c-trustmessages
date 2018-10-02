@@ -111,9 +111,11 @@ void create_data_response(Message_t *message)
     // init PRG
     srand48(time(NULL));
 
-    for (size_t i = 0; i < 2000; i++)
+    const size_t NUM = 1000;
+
+    for (size_t i = 0; i < NUM; i++)
     {
-        for (size_t j = 0; j < 2000; j++)
+        for (size_t j = 0; j < NUM; j++)
         {
             /*if (j == i)
             {
@@ -130,17 +132,8 @@ void create_data_response(Message_t *message)
             OCTET_STRING_fromString(&r->service, "seller");
             r->date = 10 * i + j;
 
-            // SL
-            /* SL_t *v = calloc(1, sizeof(SL_t));
-            v->b = drand48();
-            v->d = (1.0 - v->b) * drand48();
-            v->u = 1 - v->b - v->d;
-            ANY_fromType(&r->value, &asn_DEF_SL, v);
-            asn_fprint(stdout, &asn_DEF_SL, v);
-            ASN_STRUCT_FREE(asn_DEF_SL, v);*/
-
             // QTM
-            QTM_t v = QTM_neutral;
+            QTM_t v = (i * NUM + j) % 5;
             ANY_fromType(&r->value, &asn_DEF_QTM, &v);
             ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
         }
@@ -210,7 +203,6 @@ int main(int ac, char **av)
 
     // xer_fprint(stdout, &asn_DEF_Message, message);
     // asn_fprint(stdout, &asn_DEF_Message, message);
-
     ASN_STRUCT_FREE(asn_DEF_Message, message);
     // ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_Message, &message);
     return 0;

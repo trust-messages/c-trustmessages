@@ -15,7 +15,8 @@ ASN_MODULE_SOURCES=	\
 	Service.c	\
 	BinaryTime.c	\
 	QTM.c	\
-	SL.c
+	SL.c	\
+	utils.c
 
 ASN_MODULE_HEADERS=	\
 	Message.h	\
@@ -34,7 +35,8 @@ ASN_MODULE_HEADERS=	\
 	Service.h	\
 	BinaryTime.h	\
 	QTM.h	\
-	SL.h
+	SL.h	\
+	utils.h
 
 ASN_MODULE_HEADERS+=ANY.h
 ASN_MODULE_SOURCES+=ANY.c
