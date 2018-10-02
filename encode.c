@@ -9,14 +9,7 @@
 #include <SL.h>
 #include <stdlib.h>
 #include <time.h>
-
-/* Write the encoded output into some FILE stream. */
-static int write_out(const void *buffer, size_t size, void *app_key)
-{
-    FILE *out_fp = app_key;
-    size_t wrote = fwrite(buffer, 1, size, out_fp);
-    return (wrote == size) ? 0 : -1;
-}
+#include <utils.h>
 
 void create_format_request(Message_t *message)
 {
@@ -96,7 +89,7 @@ void create_fault(Message_t *message)
     OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
 }
 
-void create_data_response(Message_t *message)
+void create_data_response(Message_t *message, const size_t num_elements)
 {
     const int def_id[] = {1, 1, 1};
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
@@ -111,17 +104,10 @@ void create_data_response(Message_t *message)
     // init PRG
     srand48(time(NULL));
 
-    const size_t NUM = 1000;
-
-    for (size_t i = 0; i < NUM; i++)
+    for (size_t i = 0; i < num_elements; i++)
     {
-        for (size_t j = 0; j < NUM; j++)
+        for (size_t j = 0; j < num_elements; j++)
         {
-            /*if (j == i)
-            {
-                continue;
-            }*/
-
             char source[10], target[10];
             sprintf(source, "agent-%03ld", i);
             sprintf(target, "agent-%03ld", j);
@@ -133,7 +119,7 @@ void create_data_response(Message_t *message)
             r->date = 10 * i + j;
 
             // QTM
-            QTM_t v = (i * NUM + j) % 5;
+            QTM_t v = (i * num_elements + j) % 5;
             ANY_fromType(&r->value, &asn_DEF_QTM, &v);
             ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
         }
@@ -154,7 +140,11 @@ int main(int ac, char **av)
     // create_data_request_exp(message);
     // create_format_response(message);
     // create_fault(message);
-    create_data_response(message);
+    create_data_response(message, 2);
+
+    const Measurement_t m = time_encode_der(message, 1);
+    printf("Total: %Lf, Average: %Lf, size: %.2f MB (%lu B)\n", m.total, m.average, (double)m.size / 1024 / 1024, m.size);
+    return 0;
 
     const char *filename;
     asn_enc_rval_t ec;

@@ -28,5 +28,69 @@ Measurement_t time_decode(
         ASN_STRUCT_FREE(asn_DEF_Message, message);
     }
 
-    return (Measurement_t){total, total / iterations};
+    return (Measurement_t){total, total / iterations, size};
+}
+
+Measurement_t time_encode_der(
+    Message_t *message,
+    const size_t iterations)
+{
+    struct timeval start, stop;
+    long double total = 0.0;
+
+    char buff[200];
+    size_t errSize = sizeof(buff);
+    size_t encodedSize;
+
+    for (uint64_t i = 0; i < iterations; i++)
+    {
+        asn_enc_rval_t ec;
+        gettimeofday(&start, NULL);
+        ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
+        gettimeofday(&stop, NULL);
+
+        assert(ec.encoded != -1);
+        assert(asn_check_constraints(&asn_DEF_Message, message, buff, &errSize) == 0);
+        encodedSize = ec.encoded;
+
+        total += (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
+    }
+
+    return (Measurement_t){total, total / iterations, encodedSize};
+}
+
+Measurement_t time_encode_xer(
+    Message_t *message,
+    const size_t iterations)
+{
+    struct timeval start, stop;
+    long double total = 0.0;
+
+    char buff[200];
+    size_t errSize = sizeof(buff);
+    size_t encodedSize;
+
+    for (uint64_t i = 0; i < iterations; i++)
+    {
+        asn_enc_rval_t ec;
+        gettimeofday(&start, NULL);
+        ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, NULL, NULL); // TODO: Segfaults bc NULL
+        gettimeofday(&stop, NULL);
+
+        assert(ec.encoded != -1);
+        assert(asn_check_constraints(&asn_DEF_Message, message, buff, &errSize) == 0);
+        encodedSize = ec.encoded;
+
+        total += (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
+    }
+
+    return (Measurement_t){total, total / iterations, encodedSize};
+}
+
+/* Write the encoded output into some FILE stream. */
+int write_out(const void *buffer, size_t size, void *app_key)
+{
+    FILE *out_fp = app_key;
+    size_t wrote = fwrite(buffer, 1, size, out_fp);
+    return (wrote == size) ? 0 : -1;
 }
