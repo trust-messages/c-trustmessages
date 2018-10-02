@@ -22,15 +22,15 @@ extern "C" {
 #endif
 
 /* Dependencies */
-typedef enum DataRequest__type_rq {
-	DataRequest__type_rq_trust	= 0,
-	DataRequest__type_rq_assessment	= 1
-} e_DataRequest__type_rq;
+typedef enum DataRequest__type {
+	DataRequest__type_trust	= 0,
+	DataRequest__type_assessment	= 1
+} e_DataRequest__type;
 
 /* DataRequest */
 typedef struct DataRequest {
 	long	 rid;
-	long	 type_rq;
+	long	 type;
 	Query_t	 query;
 	
 	/* Context for parsing across buffer boundaries */
@@ -38,7 +38,7 @@ typedef struct DataRequest {
 } DataRequest_t;
 
 /* Implementation */
-/* extern asn_TYPE_descriptor_t asn_DEF_type_rq_3;	// (Use -fall-defs-global to expose) */
+/* extern asn_TYPE_descriptor_t asn_DEF_type_3;	// (Use -fall-defs-global to expose) */
 extern asn_TYPE_descriptor_t asn_DEF_DataRequest;
 
 #ifdef __cplusplus

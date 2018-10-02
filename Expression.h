@@ -20,17 +20,17 @@ extern "C" {
 #endif
 
 /* Dependencies */
-typedef enum Expression__operator_e {
-	Expression__operator_e_and	= 0,
-	Expression__operator_e_or	= 1
-} e_Expression__operator_e;
+typedef enum Expression__operator {
+	Expression__operator_and	= 0,
+	Expression__operator_or	= 1
+} e_Expression__operator;
 
 /* Forward declarations */
 struct Query;
 
 /* Expression */
 typedef struct Expression {
-	long	 operator_e;
+	long	 operator;
 	struct Query	*left;
 	struct Query	*right;
 	
@@ -39,7 +39,7 @@ typedef struct Expression {
 } Expression_t;
 
 /* Implementation */
-/* extern asn_TYPE_descriptor_t asn_DEF_operator_e_2;	// (Use -fall-defs-global to expose) */
+/* extern asn_TYPE_descriptor_t asn_DEF_operator_2;	// (Use -fall-defs-global to expose) */
 extern asn_TYPE_descriptor_t asn_DEF_Expression;
 
 #ifdef __cplusplus

@@ -8,7 +8,7 @@
 #include "DataRequest.h"
 
 static int
-type_rq_3_constraint(asn_TYPE_descriptor_t *td, const void *sptr,
+type_3_constraint(asn_TYPE_descriptor_t *td, const void *sptr,
 			asn_app_constraint_failed_f *ctfailcb, void *app_key) {
 	/* Replace with underlying type checker */
 	td->check_constraints = asn_DEF_NativeEnumerated.check_constraints;
@@ -20,7 +20,7 @@ type_rq_3_constraint(asn_TYPE_descriptor_t *td, const void *sptr,
  * so here we adjust the DEF accordingly.
  */
 static void
-type_rq_3_inherit_TYPE_descriptor(asn_TYPE_descriptor_t *td) {
+type_3_inherit_TYPE_descriptor(asn_TYPE_descriptor_t *td) {
 	td->free_struct    = asn_DEF_NativeEnumerated.free_struct;
 	td->print_struct   = asn_DEF_NativeEnumerated.print_struct;
 	td->check_constraints = asn_DEF_NativeEnumerated.check_constraints;
@@ -38,112 +38,112 @@ type_rq_3_inherit_TYPE_descriptor(asn_TYPE_descriptor_t *td) {
 }
 
 static void
-type_rq_3_free(asn_TYPE_descriptor_t *td,
+type_3_free(asn_TYPE_descriptor_t *td,
 		void *struct_ptr, int contents_only) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	td->free_struct(td, struct_ptr, contents_only);
 }
 
 static int
-type_rq_3_print(asn_TYPE_descriptor_t *td, const void *struct_ptr,
+type_3_print(asn_TYPE_descriptor_t *td, const void *struct_ptr,
 		int ilevel, asn_app_consume_bytes_f *cb, void *app_key) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->print_struct(td, struct_ptr, ilevel, cb, app_key);
 }
 
 static asn_dec_rval_t
-type_rq_3_decode_ber(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
+type_3_decode_ber(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
 		void **structure, const void *bufptr, size_t size, int tag_mode) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->ber_decoder(opt_codec_ctx, td, structure, bufptr, size, tag_mode);
 }
 
 static asn_enc_rval_t
-type_rq_3_encode_der(asn_TYPE_descriptor_t *td,
+type_3_encode_der(asn_TYPE_descriptor_t *td,
 		void *structure, int tag_mode, ber_tlv_tag_t tag,
 		asn_app_consume_bytes_f *cb, void *app_key) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->der_encoder(td, structure, tag_mode, tag, cb, app_key);
 }
 
 static asn_dec_rval_t
-type_rq_3_decode_xer(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
+type_3_decode_xer(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
 		void **structure, const char *opt_mname, const void *bufptr, size_t size) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->xer_decoder(opt_codec_ctx, td, structure, opt_mname, bufptr, size);
 }
 
 static asn_enc_rval_t
-type_rq_3_encode_xer(asn_TYPE_descriptor_t *td, void *structure,
+type_3_encode_xer(asn_TYPE_descriptor_t *td, void *structure,
 		int ilevel, enum xer_encoder_flags_e flags,
 		asn_app_consume_bytes_f *cb, void *app_key) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->xer_encoder(td, structure, ilevel, flags, cb, app_key);
 }
 
 static asn_dec_rval_t
-type_rq_3_decode_uper(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
+type_3_decode_uper(asn_codec_ctx_t *opt_codec_ctx, asn_TYPE_descriptor_t *td,
 		asn_per_constraints_t *constraints, void **structure, asn_per_data_t *per_data) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->uper_decoder(opt_codec_ctx, td, constraints, structure, per_data);
 }
 
 static asn_enc_rval_t
-type_rq_3_encode_uper(asn_TYPE_descriptor_t *td,
+type_3_encode_uper(asn_TYPE_descriptor_t *td,
 		asn_per_constraints_t *constraints,
 		void *structure, asn_per_outp_t *per_out) {
-	type_rq_3_inherit_TYPE_descriptor(td);
+	type_3_inherit_TYPE_descriptor(td);
 	return td->uper_encoder(td, constraints, structure, per_out);
 }
 
-static asn_per_constraints_t asn_PER_type_type_rq_constr_3 GCC_NOTUSED = {
+static asn_per_constraints_t asn_PER_type_type_constr_3 GCC_NOTUSED = {
 	{ APC_CONSTRAINED,	 1,  1,  0,  1 }	/* (0..1) */,
 	{ APC_UNCONSTRAINED,	-1, -1,  0,  0 },
 	0, 0	/* No PER value map */
 };
-static const asn_INTEGER_enum_map_t asn_MAP_type_rq_value2enum_3[] = {
+static const asn_INTEGER_enum_map_t asn_MAP_type_value2enum_3[] = {
 	{ 0,	5,	"trust" },
 	{ 1,	10,	"assessment" }
 };
-static const unsigned int asn_MAP_type_rq_enum2value_3[] = {
+static const unsigned int asn_MAP_type_enum2value_3[] = {
 	1,	/* assessment(1) */
 	0	/* trust(0) */
 };
-static const asn_INTEGER_specifics_t asn_SPC_type_rq_specs_3 = {
-	asn_MAP_type_rq_value2enum_3,	/* "tag" => N; sorted by tag */
-	asn_MAP_type_rq_enum2value_3,	/* N => "tag"; sorted by N */
+static const asn_INTEGER_specifics_t asn_SPC_type_specs_3 = {
+	asn_MAP_type_value2enum_3,	/* "tag" => N; sorted by tag */
+	asn_MAP_type_enum2value_3,	/* N => "tag"; sorted by N */
 	2,	/* Number of elements in the maps */
 	0,	/* Enumeration is not extensible */
 	1,	/* Strict enumeration */
 	0,	/* Native long size */
 	0
 };
-static const ber_tlv_tag_t asn_DEF_type_rq_tags_3[] = {
+static const ber_tlv_tag_t asn_DEF_type_tags_3[] = {
 	(ASN_TAG_CLASS_UNIVERSAL | (10 << 2))
 };
 static /* Use -fall-defs-global to expose */
-asn_TYPE_descriptor_t asn_DEF_type_rq_3 = {
-	"type-rq",
-	"type-rq",
-	type_rq_3_free,
-	type_rq_3_print,
-	type_rq_3_constraint,
-	type_rq_3_decode_ber,
-	type_rq_3_encode_der,
-	type_rq_3_decode_xer,
-	type_rq_3_encode_xer,
-	type_rq_3_decode_uper,
-	type_rq_3_encode_uper,
+asn_TYPE_descriptor_t asn_DEF_type_3 = {
+	"type",
+	"type",
+	type_3_free,
+	type_3_print,
+	type_3_constraint,
+	type_3_decode_ber,
+	type_3_encode_der,
+	type_3_decode_xer,
+	type_3_encode_xer,
+	type_3_decode_uper,
+	type_3_encode_uper,
 	0,	/* Use generic outmost tag fetcher */
-	asn_DEF_type_rq_tags_3,
-	sizeof(asn_DEF_type_rq_tags_3)
-		/sizeof(asn_DEF_type_rq_tags_3[0]), /* 1 */
-	asn_DEF_type_rq_tags_3,	/* Same as above */
-	sizeof(asn_DEF_type_rq_tags_3)
-		/sizeof(asn_DEF_type_rq_tags_3[0]), /* 1 */
-	&asn_PER_type_type_rq_constr_3,
+	asn_DEF_type_tags_3,
+	sizeof(asn_DEF_type_tags_3)
+		/sizeof(asn_DEF_type_tags_3[0]), /* 1 */
+	asn_DEF_type_tags_3,	/* Same as above */
+	sizeof(asn_DEF_type_tags_3)
+		/sizeof(asn_DEF_type_tags_3[0]), /* 1 */
+	&asn_PER_type_type_constr_3,
 	0, 0,	/* Defined elsewhere */
-	&asn_SPC_type_rq_specs_3	/* Additional specs */
+	&asn_SPC_type_specs_3	/* Additional specs */
 };
 
 static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
@@ -156,14 +156,14 @@ static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
 		0,
 		"rid"
 		},
-	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, type_rq),
+	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, type),
 		(ASN_TAG_CLASS_UNIVERSAL | (10 << 2)),
 		0,
-		&asn_DEF_type_rq_3,
+		&asn_DEF_type_3,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
 		0,
-		"type-rq"
+		"type"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, query),
 		-1 /* Ambiguous tag (CHOICE?) */,
@@ -181,7 +181,7 @@ static const ber_tlv_tag_t asn_DEF_DataRequest_tags_1[] = {
 };
 static const asn_TYPE_tag2member_t asn_MAP_DataRequest_tag2el_1[] = {
     { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* rid */
-    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 1, 0, 0 }, /* type-rq */
+    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 1, 0, 0 }, /* type */
     { (ASN_TAG_CLASS_APPLICATION | (5 << 2)), 2, 0, 0 }, /* con */
     { (ASN_TAG_CLASS_APPLICATION | (6 << 2)), 2, 0, 0 } /* exp */
 };

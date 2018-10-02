@@ -21,18 +21,18 @@ extern "C" {
 #endif
 
 /* Dependencies */
-typedef enum Constraint__operator_c {
-	Constraint__operator_c_eq	= 0,
-	Constraint__operator_c_ne	= 1,
-	Constraint__operator_c_lt	= 2,
-	Constraint__operator_c_le	= 3,
-	Constraint__operator_c_gt	= 4,
-	Constraint__operator_c_ge	= 5
-} e_Constraint__operator_c;
+typedef enum Constraint__operator {
+	Constraint__operator_eq	= 0,
+	Constraint__operator_ne	= 1,
+	Constraint__operator_lt	= 2,
+	Constraint__operator_le	= 3,
+	Constraint__operator_gt	= 4,
+	Constraint__operator_ge	= 5
+} e_Constraint__operator;
 
 /* Constraint */
 typedef struct Constraint {
-	long	 operator_c;
+	long	 operator;
 	Value_t	 value;
 	
 	/* Context for parsing across buffer boundaries */
@@ -40,7 +40,7 @@ typedef struct Constraint {
 } Constraint_t;
 
 /* Implementation */
-/* extern asn_TYPE_descriptor_t asn_DEF_operator_c_2;	// (Use -fall-defs-global to expose) */
+/* extern asn_TYPE_descriptor_t asn_DEF_operator_2;	// (Use -fall-defs-global to expose) */
 extern asn_TYPE_descriptor_t asn_DEF_Constraint;
 
 #ifdef __cplusplus

@@ -25,10 +25,10 @@ extern "C" {
 #endif
 
 /* Dependencies */
-typedef enum DataResponse__type_rs {
-	DataResponse__type_rs_trust	= 0,
-	DataResponse__type_rs_assessment	= 1
-} e_DataResponse__type_rs;
+typedef enum DataResponse__type {
+	DataResponse__type_trust	= 0,
+	DataResponse__type_assessment	= 1
+} e_DataResponse__type;
 
 /* Forward declarations */
 struct Rating;
@@ -37,7 +37,7 @@ struct Rating;
 typedef struct DataResponse {
 	long	 rid;
 	Format_t	 format;
-	long	 type_rs;
+	long	 type;
 	Entity_t	 provider;
 	struct DataResponse__response {
 		A_SEQUENCE_OF(struct Rating) list;
@@ -51,7 +51,7 @@ typedef struct DataResponse {
 } DataResponse_t;
 
 /* Implementation */
-/* extern asn_TYPE_descriptor_t asn_DEF_type_rs_4;	// (Use -fall-defs-global to expose) */
+/* extern asn_TYPE_descriptor_t asn_DEF_type_4;	// (Use -fall-defs-global to expose) */
 extern asn_TYPE_descriptor_t asn_DEF_DataResponse;
 
 #ifdef __cplusplus

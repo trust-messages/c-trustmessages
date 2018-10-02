@@ -32,9 +32,9 @@ void create_data_request(Message_t *message)
     message->version = 1;
     message->payload.present = Message__payload_PR_data_request;
     message->payload.choice.data_request.rid = 10;
-    message->payload.choice.data_request.type_rq = DataRequest__type_rq_assessment;
+    message->payload.choice.data_request.type = DataRequest__type_assessment;
     message->payload.choice.data_request.query.present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.con.operator_c = Constraint__operator_c_eq;
+    message->payload.choice.data_request.query.choice.con.operator= Constraint__operator_eq;
     message->payload.choice.data_request.query.choice.con.value.present = Value_PR_service;
     OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.con.value.choice.service, service_name);
 }
@@ -48,21 +48,21 @@ void create_data_request_exp(Message_t *message)
     // expression
     message->payload.choice.data_request.query.present = Query_PR_exp;
     message->payload.choice.data_request.query.choice.exp = calloc(1, sizeof(Expression_t));
-    message->payload.choice.data_request.query.choice.exp->operator_e = Expression__operator_e_or;
+    message->payload.choice.data_request.query.choice.exp->operator= Expression__operator_or;
 
     // left operand
     message->payload.choice.data_request.query.choice.exp->left = calloc(1, sizeof(Query_t));
     message->payload.choice.data_request.query.choice.exp->left->present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.exp->left->choice.con.operator_c = Constraint__operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->left->choice.con.operator= Constraint__operator_eq;
     message->payload.choice.data_request.query.choice.exp->left->choice.con.value.present = Value_PR_date;
     message->payload.choice.data_request.query.choice.exp->left->choice.con.value.choice.date = 123;
 
     // right operand
     message->payload.choice.data_request.query.choice.exp->right = calloc(1, sizeof(Query_t));
     message->payload.choice.data_request.query.choice.exp->right->present = Query_PR_con;
-    message->payload.choice.data_request.query.choice.exp->right->choice.con.operator_c = Constraint__operator_c_eq;
+    message->payload.choice.data_request.query.choice.exp->right->choice.con.operator= Constraint__operator_eq;
     message->payload.choice.data_request.query.choice.exp->right->choice.con.value.present = Value_PR_service;
-    OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.exp->right->choice.con.value.choice.service, "My Service!");
+    OCTET_STRING_fromString(&message->payload.choice.data_request.query.choice.exp->right->choice.con.value.choice.service, "My Service");
 }
 
 void create_format_response(Message_t *message)
@@ -104,7 +104,7 @@ void create_data_response(Message_t *message)
     message->version = 1;
     message->payload.present = Message__payload_PR_data_response;
     message->payload.choice.data_response.rid = 11;
-    message->payload.choice.data_response.type_rs = DataResponse__type_rs_assessment;
+    message->payload.choice.data_response.type = DataResponse__type_assessment;
     OBJECT_IDENTIFIER_set_arcs(&message->payload.choice.data_response.format, def_id, sizeof(def_id[0]), def_len);
     OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
 
@@ -142,8 +142,6 @@ void create_data_response(Message_t *message)
 
 int main(int ac, char **av)
 {
-    // printf("Message_t size = %lu\n", sizeof(Message_t));
-    // 240 ... hum?
     Message_t *message = calloc(1, sizeof(Message_t));
     if (!message)
     {
@@ -158,13 +156,17 @@ int main(int ac, char **av)
     // create_fault(message);
     create_data_response(message);
 
+    const char *filename;
+    asn_enc_rval_t ec;
     if (ac < 2)
     {
-        fprintf(stderr, "Specify filename for output\n");
+        filename = "RAM";
+        printf("Destination: RAM\n");
+        ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
     }
     else
     {
-        const char *filename = av[1];
+        filename = av[1];
         FILE *fp = fopen(filename, "wb");
         if (!fp)
         {
@@ -172,20 +174,20 @@ int main(int ac, char **av)
             exit(1);
         }
 
-        asn_enc_rval_t ec = der_encode(&asn_DEF_Message, message, write_out, fp);
-        // asn_enc_rval_t ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
-        // asn_enc_rval_t ec = uper_encode(&asn_DEF_Message, message, write_out, fp);
+        printf("Destination: %s\n", filename);
+        ec = der_encode(&asn_DEF_Message, message, write_out, fp);
         fclose(fp);
-        if (ec.encoded == -1)
-        {
-            fprintf(stderr, "Could not encode, error at %s\n",
-                    ec.failed_type ? ec.failed_type->name : "unknown");
-            exit(1);
-        }
-        else
-        {
-            fprintf(stderr, "Created %s\n", filename);
-        }
+    }
+
+    if (ec.encoded == -1)
+    {
+        fprintf(stderr, "Could not encode, error at %s\n",
+                ec.failed_type ? ec.failed_type->name : "unknown");
+        exit(1);
+    }
+    else
+    {
+        printf("Size: %.2f MB (%ld B)\n", (double)ec.encoded / 1024 / 1024, ec.encoded);
     }
 
     char buff[200];
@@ -194,11 +196,11 @@ int main(int ac, char **av)
 
     if (rv == 0)
     {
-        printf("Message is valid.\n");
+        printf("Validity: OK\n");
     }
     else
     {
-        printf("Message invalid (code %d): %s\n", rv, buff);
+        printf("Validity: False -- %s\n", buff);
     }
 
     // xer_fprint(stdout, &asn_DEF_Message, message);
