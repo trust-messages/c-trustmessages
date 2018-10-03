@@ -114,7 +114,10 @@ CFLAGS += -I.
 CFLAGS += -g # debug
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
-all: decode encode
+all: decode encode generate
+
+generate: ${OBJS} generate.c
+	$(CC) $(CFLAGS) -o generate generate.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
 
 encode: ${OBJS} encode.c
 	$(CC) $(CFLAGS) -o encode encode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm

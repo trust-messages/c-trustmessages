@@ -24,3 +24,15 @@ Measurement_t time_encode_xer(
     const size_t iterations);
 
 int write_out(const void *buffer, size_t size, void *app_key);
+
+void create_format_request(Message_t *message);
+
+void create_data_request(Message_t *message);
+
+void create_data_request_exp(Message_t *message);
+
+void create_format_response(Message_t *message);
+
+void create_fault(Message_t *message);
+
+void create_data_response(Message_t *message, const size_t num_elements);
