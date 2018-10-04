@@ -114,10 +114,13 @@ CFLAGS += -I.
 CFLAGS += -g # debug
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
-all: decode encode generate
+all: decode encode generate ber2xml
 
 generate: ${OBJS} generate.c
 	$(CC) $(CFLAGS) -o generate generate.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
+
+ber2xml: ${OBJS} ber2xml.c
+	$(CC) $(CFLAGS) -o ber2xml ber2xml.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
 
 encode: ${OBJS} encode.c
 	$(CC) $(CFLAGS) -o encode encode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
