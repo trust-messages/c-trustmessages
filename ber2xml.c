@@ -30,7 +30,7 @@ int main(int ac, char **av)
     const size_t fsize = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
-    printf("fsize: %ld bytes (%.2f MB)\n", fsize, (double)fsize / 1024.0 / 1024.0);
+    printf("BER size: %ld bytes (%.2f MB)\n", fsize, (double)fsize / 1024.0 / 1024.0);
 
     struct timeval start, stop;
 
@@ -40,7 +40,7 @@ int main(int ac, char **av)
     gettimeofday(&stop, NULL);
     fclose(fp);
 
-    printf("Reading file: %Lf\n", duration(&start, &stop));
+    printf("BER loading: %Lf\n", duration(&start, &stop));
 
     if (read != fsize)
     {
@@ -73,8 +73,8 @@ int main(int ac, char **av)
     asn_enc_rval_t ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, xml_fp);
     gettimeofday(&stop, NULL);
     printf("XML encoding: %Lf\n", duration(&start, &stop));
-    printf("XML size: %.2f MB\n", (double)ec.encoded / 1024 / 1024);
-    
+    printf("XML size: %ld bytes (%.2f MB)\n", ec.encoded, (double)ec.encoded / 1024 / 1024);
+
     if (ec.encoded == -1)
     {
         fprintf(stderr, "Could not encode, error at %s\n",
