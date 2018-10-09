@@ -50,8 +50,7 @@ static int no_op_consume_bytes(const void *buffer, size_t size, void *app_key)
     return 0;
 }
 
-static int
-print2fp(const void *buffer, size_t size, void *app_key)
+static int print2fp(const void *buffer, size_t size, void *app_key)
 {
     FILE *stream = (FILE *)app_key;
 
