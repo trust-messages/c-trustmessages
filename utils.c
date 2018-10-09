@@ -44,6 +44,23 @@ Measurement_t time_decode(
     return (Measurement_t){total, total / iterations, size};
 }
 
+// NO-NOP function used for encoding messages and discarding them
+static int no_op_consume_bytes(const void *buffer, size_t size, void *app_key)
+{
+    return 0;
+}
+
+static int
+print2fp(const void *buffer, size_t size, void *app_key)
+{
+    FILE *stream = (FILE *)app_key;
+
+    if (fwrite(buffer, 1, size, stream) != size)
+        return -1;
+
+    return 0;
+}
+
 Measurement_t time_encode_der(
     Message_t *message,
     const size_t iterations)
@@ -55,11 +72,13 @@ Measurement_t time_encode_der(
     size_t errSize = sizeof(buff);
     size_t encodedSize;
 
+    FILE *dev_null = fopen("/dev/null", "w");
+
     for (uint64_t i = 0; i < iterations; i++)
     {
         asn_enc_rval_t ec;
         gettimeofday(&start, NULL);
-        ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
+        ec = der_encode(&asn_DEF_Message, message, print2fp, dev_null);
         gettimeofday(&stop, NULL);
 
         assert(ec.encoded != -1);
@@ -70,11 +89,6 @@ Measurement_t time_encode_der(
     }
 
     return (Measurement_t){total, total / iterations, encodedSize};
-}
-
-static int xer_dummy_consume_bytes(const void *buffer, size_t size, void *app_key)
-{
-    return 0;
 }
 
 Measurement_t time_encode_xer(
@@ -96,7 +110,7 @@ Measurement_t time_encode_xer(
         gettimeofday(&start, NULL);
         // TODO: xer_encode() segfaults if function for consuming bytes is null.
         // Setting it to NO-OP function might add a bit of overhead
-        ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, xer_dummy_consume_bytes, NULL);
+        ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, print2fp, dev_null);
         gettimeofday(&stop, NULL);
 
         assert(ec.encoded != -1);
