@@ -114,7 +114,7 @@ CFLAGS += -I.
 CFLAGS += -g # debug
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
-all: decode encode generate ber2xml time_decode
+all: decode encode generate ber2xml time_decode time_encode
 
 generate: ${OBJS} generate.c
 	$(CC) $(CFLAGS) -o generate generate.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
@@ -131,6 +131,9 @@ decode: ${OBJS} decode.c
 time_decode: ${OBJS} time_decode.c
 	$(CC) $(CFLAGS) -o time_decode time_decode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
 
+time_encode: ${OBJS} time_encode.c
+	$(CC) $(CFLAGS) -o time_encode time_encode.c ${OBJS} $(LDFLAGS) $(LIBS) -lm
+
 .SUFFIXES:
 .SUFFIXES: .c .o
 
@@ -138,7 +141,7 @@ time_decode: ${OBJS} time_decode.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -f encode decode
+	rm -f encode decode time_encode time_decode ber2xml generate
 	rm -f $(OBJS)
 
 regen: regenerate-from-asn1-source

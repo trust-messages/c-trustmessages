@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <Query.h>
-#include <Fault.h>
 #include <Message.h>
+#include <stdlib.h>
 #include <time.h>
-#include <sys/time.h>
 #include <utils.h>
 
 int main(int ac, char **av)
 {
+
     if (ac < 2)
     {
-        fprintf(stderr, "Usage: %s <file.ber>\n", av[0]);
+        fprintf(stderr, "Usage: %s <file.{ber,xml}> ...\n", av[0]);
         exit(1);
     }
 
@@ -19,6 +18,7 @@ int main(int ac, char **av)
 
     for (int i = 1; i < ac; i++)
     {
+        // 1: Read file contents
         const char *filename = av[i];
 
         FILE *fp = fopen(filename, "rb");
@@ -32,12 +32,8 @@ int main(int ac, char **av)
         const size_t fsize = ftell(fp);
         fseek(fp, 0, SEEK_SET);
 
-        struct timeval start, stop;
-
         char *buf = malloc(fsize * sizeof(char));
-        gettimeofday(&start, NULL);
         size_t read = fread(buf, 1, fsize, fp);
-        gettimeofday(&stop, NULL);
         fclose(fp);
 
         if (read != fsize)
@@ -46,16 +42,29 @@ int main(int ac, char **av)
             exit(1);
         }
 
-        Measurement_t m;
-
+        // 2: Decode
+        Message_t *message = 0;
+        asn_dec_rval_t rval;
+        
         if (endswith(filename, ".ber"))
-            m = time_decode(&ber_decode, buf, read, 10000);
+            rval = ber_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
         else if (endswith(filename, ".xml"))
-            m = time_decode(&xer_decode, buf, read, 10000);
+            rval = xer_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
+        free(buf);
+        if (rval.code != RC_OK)
+        {
+            fprintf(stderr, "%s: Broken encoding at byte %ld\n", filename, rval.consumed);
+            exit(1);
+        }
+
+        // 3: Measure
+        Measurement_t m;
+        if (endswith(filename, ".ber"))
+            m = time_encode_der(message, 100000);
+        else if (endswith(filename, ".xml"))
+            m = time_encode_xer(message, 100000);
 
         printf("\"%s\", \"%Lf\", \"%Lf\", \"%ld\"\n", filename, m.average, m.total, fsize);
-
-        free(buf);
     }
 
     return 0;
