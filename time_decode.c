@@ -15,7 +15,7 @@ int main(int ac, char **av)
         exit(1);
     }
 
-    printf("Filename\t\t\tAverage\t\tTotal\t\tBytes\n");
+    printf("\"Filename\", \"Average\", \"Total\", \"Bytes\"\n");
 
     for (int i = 1; i < ac; i++)
     {
@@ -53,7 +53,7 @@ int main(int ac, char **av)
         else if (endswith(filename, ".xml"))
             m = time_decode(&xer_decode, buf, read, 10000);
 
-        printf("%s\t%Lf\t%Lf\t%ld\n", filename, m.average, m.total, fsize);
+        printf("\"%s\", \"%Lf\", \"%Lf\", \"%ld\"\n", filename, m.average, m.total, fsize);
 
         free(buf);
     }
