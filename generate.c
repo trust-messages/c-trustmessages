@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include <utils.h>
 
-int endswith(const char *string, const char *suffix)
-{
-    return strlen(string) > 4 && !strcmp(string + strlen(string) - 4, suffix);
-}
-
 int main(int ac, char **av)
 {
     Message_t *message = calloc(1, sizeof(Message_t));

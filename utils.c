@@ -8,6 +8,12 @@
 #include <Message.h>
 #include <QTM.h>
 #include <SL.h>
+#include <time.h>
+
+int endswith(const char *string, const char *suffix)
+{
+    return strlen(string) > 4 && !strcmp(string + strlen(string) - 4, suffix);
+}
 
 long double duration(const struct timeval *start, const struct timeval *stop)
 {
@@ -31,7 +37,7 @@ Measurement_t time_decode(
         rval = (*decoder)(0, &asn_DEF_Message, (void **)&message, buf, size);
         gettimeofday(&stop, NULL);
         assert(rval.code == RC_OK);
-        total += (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
+        total += duration(&start, &stop);
         ASN_STRUCT_FREE(asn_DEF_Message, message);
     }
 

@@ -8,6 +8,8 @@ typedef struct measurement
     size_t size;
 } Measurement_t;
 
+int endswith(const char *string, const char *suffix);
+
 long double duration(const struct timeval *start, const struct timeval *stop);
 
 Measurement_t time_decode(
