@@ -19,11 +19,12 @@ int main(int ac, char **av)
     // create_data_request_exp(message);
     // create_format_response(message);
     // create_fault(message);
-    create_data_response(message, 1000);
+    create_data_response(message, 100);
 
-    const Measurement_t m = time_encode_der(message, 10);
+    /* const Measurement_t m = time_encode_der(message, 100);
+    // const Measurement_t m = time_encode_xer(message, 100);
     printf("Total: %Lf, Average: %Lf, size: %.2f MB (%lu B)\n", m.total, m.average, (double)m.size / 1024 / 1024, m.size);
-    return 0;
+    return 0;*/
 
     const char *filename;
     asn_enc_rval_t ec;

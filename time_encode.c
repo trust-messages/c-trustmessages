@@ -14,7 +14,7 @@ int main(int ac, char **av)
         exit(1);
     }
 
-    printf("\"Filename\", \"Average\", \"Total\", \"Bytes\"\n");
+    printf("Filename, Average, Total, Bytes\n");
 
     for (int i = 1; i < ac; i++)
     {
@@ -64,7 +64,7 @@ int main(int ac, char **av)
         else if (endswith(filename, ".xml"))
             m = time_encode_xer(message, 100000);
 
-        printf("\"%s\", \"%Lf\", \"%Lf\", \"%ld\"\n", filename, m.average, m.total, fsize);
+        printf("%s, %Lf, %Lf, %ld\n", filename, m.average, m.total, fsize);
     }
 
     return 0;
