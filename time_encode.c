@@ -60,9 +60,9 @@ int main(int ac, char **av)
         // 3: Measure
         Measurement_t m;
         if (endswith(filename, ".ber"))
-            m = time_encode_der(message, 100000);
+            m = time_encode_der(message, 1000);
         else if (endswith(filename, ".xml"))
-            m = time_encode_xer(message, 100000);
+            m = time_encode_xer(message, 1000);
 
         printf("%s, %Lf, %Lf, %ld\n", filename, m.average, m.total, fsize);
     }

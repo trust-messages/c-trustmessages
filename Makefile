@@ -111,7 +111,9 @@ libsomething_la_SOURCES=$(ASN_MODULE_SOURCES) $(ASN_MODULE_HEADERS)
 # Remove the lines below to convert it into a pure .am file
 # TARGET = decoder
 CFLAGS += -I.
-# CFLAGS += -g # debug
+# CFLAGS += -Ofast
+CFLAGS += -g # debug
+CFLAGS += -pg # profile
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
 all: decode encode generate ber2xml time_decode time_encode

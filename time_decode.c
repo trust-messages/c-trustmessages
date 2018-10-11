@@ -49,9 +49,9 @@ int main(int ac, char **av)
         Measurement_t m;
 
         if (endswith(filename, ".ber"))
-            m = time_decode(&ber_decode, buf, read, 100000);
+            m = time_decode(&ber_decode, buf, read, 1000);
         else if (endswith(filename, ".xml"))
-            m = time_decode(&xer_decode, buf, read, 100000);
+            m = time_decode(&xer_decode, buf, read, 1000);
 
         printf("%s, %Lf, %Lf, %ld\n", filename, m.average, m.total, fsize);
 

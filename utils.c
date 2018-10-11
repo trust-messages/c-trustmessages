@@ -77,7 +77,8 @@ Measurement_t time_encode_der(
     {
         asn_enc_rval_t ec;
         gettimeofday(&start, NULL);
-        ec = der_encode(&asn_DEF_Message, message, print2fp, dev_null);
+        // ec = der_encode(&asn_DEF_Message, message, print2fp, dev_null);
+        ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
         gettimeofday(&stop, NULL);
 
         assert(ec.encoded != -1);
@@ -109,7 +110,8 @@ Measurement_t time_encode_xer(
         gettimeofday(&start, NULL);
         // TODO: xer_encode() segfaults if function for consuming bytes is null.
         // Setting it to NO-OP function might add a bit of overhead
-        ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, print2fp, dev_null);
+        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, print2fp, dev_null);
+        ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, no_op_consume_bytes, NULL);
         gettimeofday(&stop, NULL);
 
         assert(ec.encoded != -1);
