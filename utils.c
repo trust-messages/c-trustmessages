@@ -210,6 +210,8 @@ void create_fault(Message_t *message)
     OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
 }
 
+int buff_write(const void *buffer, size_t size, void *app_key);
+
 void create_data_response(Message_t *message, const size_t num_elements)
 {
     const int def_id[] = {1, 1, 1};
@@ -239,10 +241,43 @@ void create_data_response(Message_t *message, const size_t num_elements)
             OCTET_STRING_fromString(&r->service, "seller");
             r->date = 10 * i + j;
 
-            // QTM
-            QTM_t v = (i * num_elements + j) % 5;
-            ANY_fromType(&r->value, &asn_DEF_QTM, &v);
+            // QTM: 0A 01 04
+            // QTM_t v = QTM_very_good; //(i * num_elements + j) % 5;
+            SL_t *v = calloc(1, sizeof(SL_t));
+            v->b = 0.3;
+            v->d = 0.2;
+            v->u = 0.4;
+            // OCTET_STRING_encode_der(&asn_DEF_QTM, &v, 10, 0, buff_write, &r->value);
+            // OCTET_STRING_encode_der(&asn_DEF_SL, v, 0, 0, buff_write, &r->value);
+            // der_encode(&asn_DEF_SL, v, buff_write, &r->value);
+            // xer_encode(&asn_DEF_SL, v, XER_F_BASIC, buff_write, &r->value);
+            uper_encode(&asn_DEF_SL, v, buff_write, &r->value);
+            ASN_STRUCT_FREE(asn_DEF_SL, v);
             ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
         }
     }
+}
+
+struct _callback_arg {
+	uint8_t *buffer;
+	size_t offset;
+	size_t size;
+};
+
+int buff_write(const void *buffer, size_t size, void *key) {
+	struct _callback_arg *arg = (struct _callback_arg *)key;
+
+	if((arg->offset + size) >= arg->size) {
+		size_t nsize = (arg->size ? arg->size << 2 : 16) + size;
+		void *p = REALLOC(arg->buffer, nsize);
+		if(!p) return -1;
+		arg->buffer = (uint8_t *)p;
+		arg->size = nsize;
+	}
+
+	memcpy(arg->buffer + arg->offset, buffer, size);
+	arg->offset += size;
+	assert(arg->offset < arg->size);
+
+	return 0;
 }

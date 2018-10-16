@@ -119,6 +119,7 @@ static const asn_INTEGER_specifics_t asn_SPC_operator_specs_2 = {
 	0
 };
 static const ber_tlv_tag_t asn_DEF_operator_tags_2[] = {
+	(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (10 << 2))
 };
 static /* Use -fall-defs-global to expose */
@@ -137,10 +138,10 @@ asn_TYPE_descriptor_t asn_DEF_operator_2 = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_operator_tags_2,
 	sizeof(asn_DEF_operator_tags_2)
-		/sizeof(asn_DEF_operator_tags_2[0]), /* 1 */
+		/sizeof(asn_DEF_operator_tags_2[0]) - 1, /* 1 */
 	asn_DEF_operator_tags_2,	/* Same as above */
 	sizeof(asn_DEF_operator_tags_2)
-		/sizeof(asn_DEF_operator_tags_2[0]), /* 1 */
+		/sizeof(asn_DEF_operator_tags_2[0]), /* 2 */
 	&asn_PER_type_operator_constr_2,
 	0, 0,	/* Defined elsewhere */
 	&asn_SPC_operator_specs_2	/* Additional specs */
@@ -148,8 +149,8 @@ asn_TYPE_descriptor_t asn_DEF_operator_2 = {
 
 static asn_TYPE_member_t asn_MBR_Expression_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Expression, operator),
-		(ASN_TAG_CLASS_UNIVERSAL | (10 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_operator_2,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -157,8 +158,8 @@ static asn_TYPE_member_t asn_MBR_Expression_1[] = {
 		"operator"
 		},
 	{ ATF_POINTER, 0, offsetof(struct Expression, left),
-		-1 /* Ambiguous tag (CHOICE?) */,
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
+		+1,	/* EXPLICIT tag at current level */
 		&asn_DEF_Query,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -166,8 +167,8 @@ static asn_TYPE_member_t asn_MBR_Expression_1[] = {
 		"left"
 		},
 	{ ATF_POINTER, 0, offsetof(struct Expression, right),
-		-1 /* Ambiguous tag (CHOICE?) */,
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (2 << 2)),
+		+1,	/* EXPLICIT tag at current level */
 		&asn_DEF_Query,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -176,21 +177,18 @@ static asn_TYPE_member_t asn_MBR_Expression_1[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_Expression_tags_1[] = {
-	(ASN_TAG_CLASS_APPLICATION | (6 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static const asn_TYPE_tag2member_t asn_MAP_Expression_tag2el_1[] = {
-    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 0, 0, 0 }, /* operator */
-    { (ASN_TAG_CLASS_APPLICATION | (5 << 2)), 1, 0, 1 }, /* con */
-    { (ASN_TAG_CLASS_APPLICATION | (5 << 2)), 2, -1, 0 }, /* con */
-    { (ASN_TAG_CLASS_APPLICATION | (6 << 2)), 1, 0, 1 }, /* exp */
-    { (ASN_TAG_CLASS_APPLICATION | (6 << 2)), 2, -1, 0 } /* exp */
+    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* operator */
+    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 }, /* left */
+    { (ASN_TAG_CLASS_CONTEXT | (2 << 2)), 2, 0, 0 } /* right */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_Expression_specs_1 = {
 	sizeof(struct Expression),
 	offsetof(struct Expression, _asn_ctx),
 	asn_MAP_Expression_tag2el_1,
-	5,	/* Count of tags in the map */
+	3,	/* Count of tags in the map */
 	0, 0, 0,	/* Optional elements (not needed) */
 	-1,	/* Start extensions */
 	-1	/* Stop extensions */
@@ -210,10 +208,10 @@ asn_TYPE_descriptor_t asn_DEF_Expression = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_Expression_tags_1,
 	sizeof(asn_DEF_Expression_tags_1)
-		/sizeof(asn_DEF_Expression_tags_1[0]) - 1, /* 1 */
+		/sizeof(asn_DEF_Expression_tags_1[0]), /* 1 */
 	asn_DEF_Expression_tags_1,	/* Same as above */
 	sizeof(asn_DEF_Expression_tags_1)
-		/sizeof(asn_DEF_Expression_tags_1[0]), /* 2 */
+		/sizeof(asn_DEF_Expression_tags_1[0]), /* 1 */
 	0,	/* No PER visible constraints */
 	asn_MBR_Expression_1,
 	3,	/* Elements count */

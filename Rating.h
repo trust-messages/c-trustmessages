@@ -15,7 +15,7 @@
 #include "Entity.h"
 #include "Service.h"
 #include "BinaryTime.h"
-#include <ANY.h>
+#include <OCTET_STRING.h>
 #include <constr_SEQUENCE.h>
 
 #ifdef __cplusplus
@@ -28,7 +28,7 @@ typedef struct Rating {
 	Entity_t	 target;
 	Service_t	 service;
 	BinaryTime_t	 date;
-	ANY_t	 value;
+	OCTET_STRING_t	 value;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;

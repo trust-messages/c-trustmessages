@@ -32,7 +32,11 @@ int main(int ac, char **av)
     {
         filename = "RAM";
         printf("Destination: RAM\n");
-        ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
+        FILE *dev_null = fopen("/dev/null", "w");
+        // ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
+        // ec = der_encode(&asn_DEF_Message, message, write_out, dev_null);
+        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, dev_null);
+        ec = uper_encode(&asn_DEF_Message, message, write_out, dev_null);
     }
     else
     {
@@ -45,7 +49,9 @@ int main(int ac, char **av)
         }
 
         printf("Destination: %s\n", filename);
-        ec = der_encode(&asn_DEF_Message, message, write_out, fp);
+        // ec = der_encode(&asn_DEF_Message, message, write_out, fp);
+        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
+        ec = uper_encode(&asn_DEF_Message, message, write_out, fp);
         fclose(fp);
     }
 

@@ -97,7 +97,6 @@ FormatRequest_encode_uper(asn_TYPE_descriptor_t *td,
 }
 
 static const ber_tlv_tag_t asn_DEF_FormatRequest_tags_1[] = {
-	(ASN_TAG_CLASS_APPLICATION | (0 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (2 << 2))
 };
 asn_TYPE_descriptor_t asn_DEF_FormatRequest = {
@@ -115,10 +114,10 @@ asn_TYPE_descriptor_t asn_DEF_FormatRequest = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_FormatRequest_tags_1,
 	sizeof(asn_DEF_FormatRequest_tags_1)
-		/sizeof(asn_DEF_FormatRequest_tags_1[0]) - 1, /* 1 */
+		/sizeof(asn_DEF_FormatRequest_tags_1[0]), /* 1 */
 	asn_DEF_FormatRequest_tags_1,	/* Same as above */
 	sizeof(asn_DEF_FormatRequest_tags_1)
-		/sizeof(asn_DEF_FormatRequest_tags_1[0]), /* 2 */
+		/sizeof(asn_DEF_FormatRequest_tags_1[0]), /* 1 */
 	0,	/* No PER visible constraints */
 	0, 0,	/* No members */
 	0	/* No specifics */

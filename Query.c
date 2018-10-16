@@ -14,8 +14,8 @@ static asn_per_constraints_t asn_PER_type_Query_constr_1 GCC_NOTUSED = {
 };
 static asn_TYPE_member_t asn_MBR_Query_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Query, choice.con),
-		(ASN_TAG_CLASS_APPLICATION | (5 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Constraint,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -23,8 +23,8 @@ static asn_TYPE_member_t asn_MBR_Query_1[] = {
 		"con"
 		},
 	{ ATF_POINTER, 0, offsetof(struct Query, choice.exp),
-		(ASN_TAG_CLASS_APPLICATION | (6 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Expression,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -33,8 +33,8 @@ static asn_TYPE_member_t asn_MBR_Query_1[] = {
 		},
 };
 static const asn_TYPE_tag2member_t asn_MAP_Query_tag2el_1[] = {
-    { (ASN_TAG_CLASS_APPLICATION | (5 << 2)), 0, 0, 0 }, /* con */
-    { (ASN_TAG_CLASS_APPLICATION | (6 << 2)), 1, 0, 0 } /* exp */
+    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* con */
+    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 } /* exp */
 };
 static asn_CHOICE_specifics_t asn_SPC_Query_specs_1 = {
 	sizeof(struct Query),

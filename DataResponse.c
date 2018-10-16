@@ -119,6 +119,7 @@ static const asn_INTEGER_specifics_t asn_SPC_type_specs_4 = {
 	0
 };
 static const ber_tlv_tag_t asn_DEF_type_tags_4[] = {
+	(ASN_TAG_CLASS_CONTEXT | (2 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (10 << 2))
 };
 static /* Use -fall-defs-global to expose */
@@ -137,10 +138,10 @@ asn_TYPE_descriptor_t asn_DEF_type_4 = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_type_tags_4,
 	sizeof(asn_DEF_type_tags_4)
-		/sizeof(asn_DEF_type_tags_4[0]), /* 1 */
+		/sizeof(asn_DEF_type_tags_4[0]) - 1, /* 1 */
 	asn_DEF_type_tags_4,	/* Same as above */
 	sizeof(asn_DEF_type_tags_4)
-		/sizeof(asn_DEF_type_tags_4[0]), /* 1 */
+		/sizeof(asn_DEF_type_tags_4[0]), /* 2 */
 	&asn_PER_type_type_constr_4,
 	0, 0,	/* Defined elsewhere */
 	&asn_SPC_type_specs_4	/* Additional specs */
@@ -148,7 +149,7 @@ asn_TYPE_descriptor_t asn_DEF_type_4 = {
 
 static asn_TYPE_member_t asn_MBR_response_8[] = {
 	{ ATF_POINTER, 0, 0,
-		(ASN_TAG_CLASS_APPLICATION | (4 << 2)),
+		(ASN_TAG_CLASS_UNIVERSAL | (16 << 2)),
 		0,
 		&asn_DEF_Rating,
 		0,	/* Defer constraints checking to the member type */
@@ -158,6 +159,7 @@ static asn_TYPE_member_t asn_MBR_response_8[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_response_tags_8[] = {
+	(ASN_TAG_CLASS_CONTEXT | (4 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static asn_SET_OF_specifics_t asn_SPC_response_specs_8 = {
@@ -181,10 +183,10 @@ asn_TYPE_descriptor_t asn_DEF_response_8 = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_response_tags_8,
 	sizeof(asn_DEF_response_tags_8)
-		/sizeof(asn_DEF_response_tags_8[0]), /* 1 */
+		/sizeof(asn_DEF_response_tags_8[0]) - 1, /* 1 */
 	asn_DEF_response_tags_8,	/* Same as above */
 	sizeof(asn_DEF_response_tags_8)
-		/sizeof(asn_DEF_response_tags_8[0]), /* 1 */
+		/sizeof(asn_DEF_response_tags_8[0]), /* 2 */
 	0,	/* No PER visible constraints */
 	asn_MBR_response_8,
 	1,	/* Single element */
@@ -193,8 +195,8 @@ asn_TYPE_descriptor_t asn_DEF_response_8 = {
 
 static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, rid),
-		(ASN_TAG_CLASS_UNIVERSAL | (2 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_NativeInteger,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -202,8 +204,8 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		"rid"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, format),
-		(ASN_TAG_CLASS_UNIVERSAL | (6 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Format,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -211,8 +213,8 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		"format"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, type),
-		(ASN_TAG_CLASS_UNIVERSAL | (10 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (2 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_type_4,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -220,8 +222,8 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		"type"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, provider),
-		(ASN_TAG_CLASS_UNIVERSAL | (19 << 2)),
-		0,
+		(ASN_TAG_CLASS_CONTEXT | (3 << 2)),
+		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Entity,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -229,7 +231,7 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		"provider"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, response),
-		(ASN_TAG_CLASS_UNIVERSAL | (16 << 2)),
+		(ASN_TAG_CLASS_CONTEXT | (4 << 2)),
 		0,
 		&asn_DEF_response_8,
 		0,	/* Defer constraints checking to the member type */
@@ -239,15 +241,14 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_DataResponse_tags_1[] = {
-	(ASN_TAG_CLASS_APPLICATION | (3 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static const asn_TYPE_tag2member_t asn_MAP_DataResponse_tag2el_1[] = {
-    { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* rid */
-    { (ASN_TAG_CLASS_UNIVERSAL | (6 << 2)), 1, 0, 0 }, /* format */
-    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 2, 0, 0 }, /* type */
-    { (ASN_TAG_CLASS_UNIVERSAL | (16 << 2)), 4, 0, 0 }, /* response */
-    { (ASN_TAG_CLASS_UNIVERSAL | (19 << 2)), 3, 0, 0 } /* provider */
+    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* rid */
+    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 }, /* format */
+    { (ASN_TAG_CLASS_CONTEXT | (2 << 2)), 2, 0, 0 }, /* type */
+    { (ASN_TAG_CLASS_CONTEXT | (3 << 2)), 3, 0, 0 }, /* provider */
+    { (ASN_TAG_CLASS_CONTEXT | (4 << 2)), 4, 0, 0 } /* response */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_DataResponse_specs_1 = {
 	sizeof(struct DataResponse),
@@ -273,10 +274,10 @@ asn_TYPE_descriptor_t asn_DEF_DataResponse = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_DataResponse_tags_1,
 	sizeof(asn_DEF_DataResponse_tags_1)
-		/sizeof(asn_DEF_DataResponse_tags_1[0]) - 1, /* 1 */
+		/sizeof(asn_DEF_DataResponse_tags_1[0]), /* 1 */
 	asn_DEF_DataResponse_tags_1,	/* Same as above */
 	sizeof(asn_DEF_DataResponse_tags_1)
-		/sizeof(asn_DEF_DataResponse_tags_1[0]), /* 2 */
+		/sizeof(asn_DEF_DataResponse_tags_1[0]), /* 1 */
 	0,	/* No PER visible constraints */
 	asn_MBR_DataResponse_1,
 	5,	/* Elements count */

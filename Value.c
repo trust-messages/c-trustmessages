@@ -14,7 +14,7 @@ static asn_per_constraints_t asn_PER_type_Value_constr_1 GCC_NOTUSED = {
 };
 static asn_TYPE_member_t asn_MBR_Value_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Value, choice.source),
-		(ASN_TAG_CLASS_APPLICATION | (0 << 2)),
+		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
 		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Entity,
 		0,	/* Defer constraints checking to the member type */
@@ -23,7 +23,7 @@ static asn_TYPE_member_t asn_MBR_Value_1[] = {
 		"source"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Value, choice.target),
-		(ASN_TAG_CLASS_APPLICATION | (1 << 2)),
+		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
 		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Entity,
 		0,	/* Defer constraints checking to the member type */
@@ -32,7 +32,7 @@ static asn_TYPE_member_t asn_MBR_Value_1[] = {
 		"target"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Value, choice.date),
-		(ASN_TAG_CLASS_APPLICATION | (2 << 2)),
+		(ASN_TAG_CLASS_CONTEXT | (2 << 2)),
 		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_BinaryTime,
 		0,	/* Defer constraints checking to the member type */
@@ -41,7 +41,7 @@ static asn_TYPE_member_t asn_MBR_Value_1[] = {
 		"date"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Value, choice.service),
-		(ASN_TAG_CLASS_APPLICATION | (3 << 2)),
+		(ASN_TAG_CLASS_CONTEXT | (3 << 2)),
 		-1,	/* IMPLICIT tag at current level */
 		&asn_DEF_Service,
 		0,	/* Defer constraints checking to the member type */
@@ -51,10 +51,10 @@ static asn_TYPE_member_t asn_MBR_Value_1[] = {
 		},
 };
 static const asn_TYPE_tag2member_t asn_MAP_Value_tag2el_1[] = {
-    { (ASN_TAG_CLASS_APPLICATION | (0 << 2)), 0, 0, 0 }, /* source */
-    { (ASN_TAG_CLASS_APPLICATION | (1 << 2)), 1, 0, 0 }, /* target */
-    { (ASN_TAG_CLASS_APPLICATION | (2 << 2)), 2, 0, 0 }, /* date */
-    { (ASN_TAG_CLASS_APPLICATION | (3 << 2)), 3, 0, 0 } /* service */
+    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* source */
+    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 }, /* target */
+    { (ASN_TAG_CLASS_CONTEXT | (2 << 2)), 2, 0, 0 }, /* date */
+    { (ASN_TAG_CLASS_CONTEXT | (3 << 2)), 3, 0, 0 } /* service */
 };
 static asn_CHOICE_specifics_t asn_SPC_Value_specs_1 = {
 	sizeof(struct Value),
