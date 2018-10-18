@@ -9,8 +9,8 @@
 
 static asn_TYPE_member_t asn_MBR_Fault_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Fault, rid),
-		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
-		-1,	/* IMPLICIT tag at current level */
+		(ASN_TAG_CLASS_UNIVERSAL | (2 << 2)),
+		0,
 		&asn_DEF_NativeInteger,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -18,9 +18,9 @@ static asn_TYPE_member_t asn_MBR_Fault_1[] = {
 		"rid"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Fault, message),
-		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
-		-1,	/* IMPLICIT tag at current level */
-		&asn_DEF_PrintableString,
+		(ASN_TAG_CLASS_UNIVERSAL | (22 << 2)),
+		0,
+		&asn_DEF_IA5String,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
 		0,
@@ -28,11 +28,12 @@ static asn_TYPE_member_t asn_MBR_Fault_1[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_Fault_tags_1[] = {
+	(ASN_TAG_CLASS_APPLICATION | (7 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static const asn_TYPE_tag2member_t asn_MAP_Fault_tag2el_1[] = {
-    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* rid */
-    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 } /* message */
+    { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* rid */
+    { (ASN_TAG_CLASS_UNIVERSAL | (22 << 2)), 1, 0, 0 } /* message */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_Fault_specs_1 = {
 	sizeof(struct Fault),
@@ -58,10 +59,10 @@ asn_TYPE_descriptor_t asn_DEF_Fault = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_Fault_tags_1,
 	sizeof(asn_DEF_Fault_tags_1)
-		/sizeof(asn_DEF_Fault_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_Fault_tags_1[0]) - 1, /* 1 */
 	asn_DEF_Fault_tags_1,	/* Same as above */
 	sizeof(asn_DEF_Fault_tags_1)
-		/sizeof(asn_DEF_Fault_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_Fault_tags_1[0]), /* 2 */
 	0,	/* No PER visible constraints */
 	asn_MBR_Fault_1,
 	2,	/* Elements count */

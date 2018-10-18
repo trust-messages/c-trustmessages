@@ -44,7 +44,7 @@ int main(int ac, char **av)
     // create_data_request_exp(message);
     // create_format_response(message);
     // create_fault(message);
-    create_data_response(message, encoding, 100);
+    create_data_response(message, encoding, 1000);
 
     /* const Measurement_t m = time_encode_der(message, 100);
     // const Measurement_t m = time_encode_xer(message, 100);

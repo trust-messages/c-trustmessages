@@ -13,7 +13,7 @@
 
 /* Including external dependencies */
 #include <NativeInteger.h>
-#include <PrintableString.h>
+#include <IA5String.h>
 #include <constr_SEQUENCE.h>
 
 #ifdef __cplusplus
@@ -23,7 +23,7 @@ extern "C" {
 /* Fault */
 typedef struct Fault {
 	long	 rid;
-	PrintableString_t	 message;
+	IA5String_t	 message;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;

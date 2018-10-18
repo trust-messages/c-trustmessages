@@ -127,7 +127,6 @@ static const asn_INTEGER_specifics_t asn_SPC_operator_specs_2 = {
 	0
 };
 static const ber_tlv_tag_t asn_DEF_operator_tags_2[] = {
-	(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (10 << 2))
 };
 static /* Use -fall-defs-global to expose */
@@ -146,10 +145,10 @@ asn_TYPE_descriptor_t asn_DEF_operator_2 = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_operator_tags_2,
 	sizeof(asn_DEF_operator_tags_2)
-		/sizeof(asn_DEF_operator_tags_2[0]) - 1, /* 1 */
+		/sizeof(asn_DEF_operator_tags_2[0]), /* 1 */
 	asn_DEF_operator_tags_2,	/* Same as above */
 	sizeof(asn_DEF_operator_tags_2)
-		/sizeof(asn_DEF_operator_tags_2[0]), /* 2 */
+		/sizeof(asn_DEF_operator_tags_2[0]), /* 1 */
 	&asn_PER_type_operator_constr_2,
 	0, 0,	/* Defined elsewhere */
 	&asn_SPC_operator_specs_2	/* Additional specs */
@@ -157,8 +156,8 @@ asn_TYPE_descriptor_t asn_DEF_operator_2 = {
 
 static asn_TYPE_member_t asn_MBR_Constraint_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Constraint, operator),
-		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
-		-1,	/* IMPLICIT tag at current level */
+		(ASN_TAG_CLASS_UNIVERSAL | (10 << 2)),
+		0,
 		&asn_DEF_operator_2,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -166,8 +165,8 @@ static asn_TYPE_member_t asn_MBR_Constraint_1[] = {
 		"operator"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Constraint, value),
-		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
-		+1,	/* EXPLICIT tag at current level */
+		-1 /* Ambiguous tag (CHOICE?) */,
+		0,
 		&asn_DEF_Value,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -176,17 +175,21 @@ static asn_TYPE_member_t asn_MBR_Constraint_1[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_Constraint_tags_1[] = {
+	(ASN_TAG_CLASS_APPLICATION | (5 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static const asn_TYPE_tag2member_t asn_MAP_Constraint_tag2el_1[] = {
-    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* operator */
-    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 } /* value */
+    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 0, 0, 0 }, /* operator */
+    { (ASN_TAG_CLASS_APPLICATION | (0 << 2)), 1, 0, 0 }, /* source */
+    { (ASN_TAG_CLASS_APPLICATION | (1 << 2)), 1, 0, 0 }, /* target */
+    { (ASN_TAG_CLASS_APPLICATION | (2 << 2)), 1, 0, 0 }, /* date */
+    { (ASN_TAG_CLASS_APPLICATION | (3 << 2)), 1, 0, 0 } /* service */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_Constraint_specs_1 = {
 	sizeof(struct Constraint),
 	offsetof(struct Constraint, _asn_ctx),
 	asn_MAP_Constraint_tag2el_1,
-	2,	/* Count of tags in the map */
+	5,	/* Count of tags in the map */
 	0, 0, 0,	/* Optional elements (not needed) */
 	-1,	/* Start extensions */
 	-1	/* Stop extensions */
@@ -206,10 +209,10 @@ asn_TYPE_descriptor_t asn_DEF_Constraint = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_Constraint_tags_1,
 	sizeof(asn_DEF_Constraint_tags_1)
-		/sizeof(asn_DEF_Constraint_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_Constraint_tags_1[0]) - 1, /* 1 */
 	asn_DEF_Constraint_tags_1,	/* Same as above */
 	sizeof(asn_DEF_Constraint_tags_1)
-		/sizeof(asn_DEF_Constraint_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_Constraint_tags_1[0]), /* 2 */
 	0,	/* No PER visible constraints */
 	asn_MBR_Constraint_1,
 	2,	/* Elements count */

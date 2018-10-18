@@ -19,8 +19,18 @@ int endswith(const char *string, const char *suffix);
 
 long double duration(const struct timeval *start, const struct timeval *stop);
 
-Measurement_t time_decode(
-    asn_dec_rval_t (*decoder)(asn_codec_ctx_t *, asn_TYPE_descriptor_t *, void **, const void *, size_t), const char *buf,
+Measurement_t time_decode_ber(
+    const char *buf,
+    const size_t size,
+    const size_t iterations);
+
+Measurement_t time_decode_xer(
+    const char *buf,
+    const size_t size,
+    const size_t iterations);
+
+Measurement_t time_decode_uper(
+    const char *buf,
     const size_t size,
     const size_t iterations);
 

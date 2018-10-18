@@ -5,7 +5,7 @@
 #include <time.h>
 #include <utils.h>
 
-static const int ITERATIONS = 10;
+static const int ITERATIONS = 10000;
 
 int main(int ac, char **av)
 {

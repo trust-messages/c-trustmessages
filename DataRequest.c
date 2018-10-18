@@ -119,7 +119,6 @@ static const asn_INTEGER_specifics_t asn_SPC_type_specs_3 = {
 	0
 };
 static const ber_tlv_tag_t asn_DEF_type_tags_3[] = {
-	(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (10 << 2))
 };
 static /* Use -fall-defs-global to expose */
@@ -138,10 +137,10 @@ asn_TYPE_descriptor_t asn_DEF_type_3 = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_type_tags_3,
 	sizeof(asn_DEF_type_tags_3)
-		/sizeof(asn_DEF_type_tags_3[0]) - 1, /* 1 */
+		/sizeof(asn_DEF_type_tags_3[0]), /* 1 */
 	asn_DEF_type_tags_3,	/* Same as above */
 	sizeof(asn_DEF_type_tags_3)
-		/sizeof(asn_DEF_type_tags_3[0]), /* 2 */
+		/sizeof(asn_DEF_type_tags_3[0]), /* 1 */
 	&asn_PER_type_type_constr_3,
 	0, 0,	/* Defined elsewhere */
 	&asn_SPC_type_specs_3	/* Additional specs */
@@ -149,8 +148,8 @@ asn_TYPE_descriptor_t asn_DEF_type_3 = {
 
 static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, rid),
-		(ASN_TAG_CLASS_CONTEXT | (0 << 2)),
-		-1,	/* IMPLICIT tag at current level */
+		(ASN_TAG_CLASS_UNIVERSAL | (2 << 2)),
+		0,
 		&asn_DEF_NativeInteger,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -158,8 +157,8 @@ static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
 		"rid"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, type),
-		(ASN_TAG_CLASS_CONTEXT | (1 << 2)),
-		-1,	/* IMPLICIT tag at current level */
+		(ASN_TAG_CLASS_UNIVERSAL | (10 << 2)),
+		0,
 		&asn_DEF_type_3,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -167,8 +166,8 @@ static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
 		"type"
 		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataRequest, query),
-		(ASN_TAG_CLASS_CONTEXT | (2 << 2)),
-		+1,	/* EXPLICIT tag at current level */
+		-1 /* Ambiguous tag (CHOICE?) */,
+		0,
 		&asn_DEF_Query,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
@@ -177,18 +176,20 @@ static asn_TYPE_member_t asn_MBR_DataRequest_1[] = {
 		},
 };
 static const ber_tlv_tag_t asn_DEF_DataRequest_tags_1[] = {
+	(ASN_TAG_CLASS_APPLICATION | (2 << 2)),
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
 static const asn_TYPE_tag2member_t asn_MAP_DataRequest_tag2el_1[] = {
-    { (ASN_TAG_CLASS_CONTEXT | (0 << 2)), 0, 0, 0 }, /* rid */
-    { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 }, /* type */
-    { (ASN_TAG_CLASS_CONTEXT | (2 << 2)), 2, 0, 0 } /* query */
+    { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* rid */
+    { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 1, 0, 0 }, /* type */
+    { (ASN_TAG_CLASS_APPLICATION | (5 << 2)), 2, 0, 0 }, /* con */
+    { (ASN_TAG_CLASS_APPLICATION | (6 << 2)), 2, 0, 0 } /* exp */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_DataRequest_specs_1 = {
 	sizeof(struct DataRequest),
 	offsetof(struct DataRequest, _asn_ctx),
 	asn_MAP_DataRequest_tag2el_1,
-	3,	/* Count of tags in the map */
+	4,	/* Count of tags in the map */
 	0, 0, 0,	/* Optional elements (not needed) */
 	-1,	/* Start extensions */
 	-1	/* Stop extensions */
@@ -208,10 +209,10 @@ asn_TYPE_descriptor_t asn_DEF_DataRequest = {
 	0,	/* Use generic outmost tag fetcher */
 	asn_DEF_DataRequest_tags_1,
 	sizeof(asn_DEF_DataRequest_tags_1)
-		/sizeof(asn_DEF_DataRequest_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_DataRequest_tags_1[0]) - 1, /* 1 */
 	asn_DEF_DataRequest_tags_1,	/* Same as above */
 	sizeof(asn_DEF_DataRequest_tags_1)
-		/sizeof(asn_DEF_DataRequest_tags_1[0]), /* 1 */
+		/sizeof(asn_DEF_DataRequest_tags_1[0]), /* 2 */
 	0,	/* No PER visible constraints */
 	asn_MBR_DataRequest_1,
 	3,	/* Elements count */

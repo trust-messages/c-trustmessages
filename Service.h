@@ -12,14 +12,14 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include <PrintableString.h>
+#include <IA5String.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Service */
-typedef PrintableString_t	 Service_t;
+typedef IA5String_t	 Service_t;
 
 /* Implementation */
 extern asn_TYPE_descriptor_t asn_DEF_Service;

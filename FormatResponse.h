@@ -14,7 +14,7 @@
 /* Including external dependencies */
 #include <NativeInteger.h>
 #include "Format.h"
-#include <PrintableString.h>
+#include <IA5String.h>
 #include <constr_SEQUENCE.h>
 
 #ifdef __cplusplus
@@ -25,9 +25,9 @@ extern "C" {
 typedef struct FormatResponse {
 	long	 rid;
 	Format_t	 assessment_id;
-	PrintableString_t	 assessment_def;
+	IA5String_t	 assessment_def;
 	Format_t	 trust_id;
-	PrintableString_t	 trust_def;
+	IA5String_t	 trust_def;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;

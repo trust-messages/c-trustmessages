@@ -11,30 +11,30 @@ int
 Entity_constraint(asn_TYPE_descriptor_t *td, const void *sptr,
 			asn_app_constraint_failed_f *ctfailcb, void *app_key) {
 	/* Replace with underlying type checker */
-	td->check_constraints = asn_DEF_PrintableString.check_constraints;
+	td->check_constraints = asn_DEF_IA5String.check_constraints;
 	return td->check_constraints(td, sptr, ctfailcb, app_key);
 }
 
 /*
- * This type is implemented using PrintableString,
+ * This type is implemented using IA5String,
  * so here we adjust the DEF accordingly.
  */
 static void
 Entity_1_inherit_TYPE_descriptor(asn_TYPE_descriptor_t *td) {
-	td->free_struct    = asn_DEF_PrintableString.free_struct;
-	td->print_struct   = asn_DEF_PrintableString.print_struct;
-	td->check_constraints = asn_DEF_PrintableString.check_constraints;
-	td->ber_decoder    = asn_DEF_PrintableString.ber_decoder;
-	td->der_encoder    = asn_DEF_PrintableString.der_encoder;
-	td->xer_decoder    = asn_DEF_PrintableString.xer_decoder;
-	td->xer_encoder    = asn_DEF_PrintableString.xer_encoder;
-	td->uper_decoder   = asn_DEF_PrintableString.uper_decoder;
-	td->uper_encoder   = asn_DEF_PrintableString.uper_encoder;
+	td->free_struct    = asn_DEF_IA5String.free_struct;
+	td->print_struct   = asn_DEF_IA5String.print_struct;
+	td->check_constraints = asn_DEF_IA5String.check_constraints;
+	td->ber_decoder    = asn_DEF_IA5String.ber_decoder;
+	td->der_encoder    = asn_DEF_IA5String.der_encoder;
+	td->xer_decoder    = asn_DEF_IA5String.xer_decoder;
+	td->xer_encoder    = asn_DEF_IA5String.xer_encoder;
+	td->uper_decoder   = asn_DEF_IA5String.uper_decoder;
+	td->uper_encoder   = asn_DEF_IA5String.uper_encoder;
 	if(!td->per_constraints)
-		td->per_constraints = asn_DEF_PrintableString.per_constraints;
-	td->elements       = asn_DEF_PrintableString.elements;
-	td->elements_count = asn_DEF_PrintableString.elements_count;
-	td->specifics      = asn_DEF_PrintableString.specifics;
+		td->per_constraints = asn_DEF_IA5String.per_constraints;
+	td->elements       = asn_DEF_IA5String.elements;
+	td->elements_count = asn_DEF_IA5String.elements_count;
+	td->specifics      = asn_DEF_IA5String.specifics;
 }
 
 void
@@ -97,7 +97,7 @@ Entity_encode_uper(asn_TYPE_descriptor_t *td,
 }
 
 static const ber_tlv_tag_t asn_DEF_Entity_tags_1[] = {
-	(ASN_TAG_CLASS_UNIVERSAL | (19 << 2))
+	(ASN_TAG_CLASS_UNIVERSAL | (22 << 2))
 };
 asn_TYPE_descriptor_t asn_DEF_Entity = {
 	"Entity",

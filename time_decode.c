@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include <utils.h>
 
+static int ITERATIONS = 10000;
+
 int main(int ac, char **av)
 {
     if (ac < 2)
@@ -20,6 +22,25 @@ int main(int ac, char **av)
     for (int i = 1; i < ac; i++)
     {
         const char *filename = av[i];
+        Encoding encoding;
+
+        if (endswith(filename, ".ber"))
+        {
+            encoding = BER;
+        }
+        else if (endswith(filename, ".xer"))
+        {
+            encoding = XER;
+        }
+        else if (endswith(filename, ".uper"))
+        {
+            encoding = UPER;
+        }
+        else
+        {
+            printf("Unknown file: %s\n", filename);
+            exit(1);
+        }
 
         FILE *fp = fopen(filename, "rb");
         if (!fp)
@@ -48,10 +69,22 @@ int main(int ac, char **av)
 
         Measurement_t m;
 
-        if (endswith(filename, ".ber"))
-            m = time_decode(&ber_decode, buf, read, 1000);
-        else if (endswith(filename, ".xml"))
-            m = time_decode(&xer_decode, buf, read, 1000);
+        switch (encoding)
+        {
+        case BER:
+            m = time_decode_ber(buf, read, ITERATIONS);
+            break;
+        case XER:
+            m = time_decode_xer(buf, read, ITERATIONS);
+            break;
+        case UPER:
+            m = time_decode_uper(buf, read, ITERATIONS);
+            break;
+        default:
+            perror("Invalid state: A valid encoding shout be set.\n");
+            exit(1);
+            break;
+        }
 
         printf("%s, %Lf, %Lf, %ld\n", filename, m.average, m.total, fsize);
 
