@@ -12,7 +12,7 @@
 
 int endswith(const char *string, const char *suffix)
 {
-    return strlen(string) > 4 && !strcmp(string + strlen(string) - 4, suffix);
+    return strlen(string) > strlen(suffix) && !strcmp(string + strlen(string) - strlen(suffix), suffix);
 }
 
 long double duration(const struct timeval *start, const struct timeval *stop)
@@ -50,16 +50,6 @@ static int no_op_consume_bytes(const void *buffer, size_t size, void *app_key)
     return 0;
 }
 
-static int print2fp(const void *buffer, size_t size, void *app_key)
-{
-    FILE *stream = (FILE *)app_key;
-
-    if (fwrite(buffer, 1, size, stream) != size)
-        return -1;
-
-    return 0;
-}
-
 Measurement_t time_encode_der(
     Message_t *message,
     const size_t iterations)
@@ -77,7 +67,7 @@ Measurement_t time_encode_der(
     {
         asn_enc_rval_t ec;
         gettimeofday(&start, NULL);
-        // ec = der_encode(&asn_DEF_Message, message, print2fp, dev_null);
+        // ec = der_encode(&asn_DEF_Message, message, write_out, dev_null);
         ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
         gettimeofday(&stop, NULL);
 
@@ -110,8 +100,38 @@ Measurement_t time_encode_xer(
         gettimeofday(&start, NULL);
         // TODO: xer_encode() segfaults if function for consuming bytes is null.
         // Setting it to NO-OP function might add a bit of overhead
-        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, print2fp, dev_null);
+        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, dev_null);
         ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, no_op_consume_bytes, NULL);
+        gettimeofday(&stop, NULL);
+
+        assert(ec.encoded != -1);
+        assert(asn_check_constraints(&asn_DEF_Message, message, buff, &errSize) == 0);
+        encodedSize = ec.encoded;
+
+        total += duration(&start, &stop);
+    }
+
+    return (Measurement_t){total, total / iterations, encodedSize};
+}
+
+Measurement_t time_encode_uper(
+    Message_t *message,
+    const size_t iterations)
+{
+    struct timeval start, stop;
+    long double total = 0.0;
+
+    char buff[200];
+    size_t errSize = sizeof(buff);
+    size_t encodedSize;
+
+    FILE *dev_null = fopen("/dev/null", "w");
+
+    for (uint64_t i = 0; i < iterations; i++)
+    {
+        asn_enc_rval_t ec;
+        gettimeofday(&start, NULL);
+        ec = uper_encode(&asn_DEF_Message, message, write_out, dev_null);
         gettimeofday(&stop, NULL);
 
         assert(ec.encoded != -1);
@@ -212,7 +232,7 @@ void create_fault(Message_t *message)
 
 int buff_write(const void *buffer, size_t size, void *app_key);
 
-void create_data_response(Message_t *message, const size_t num_elements)
+void create_data_response(Message_t *message, Encoding encoding, const size_t num_elements)
 {
     const int def_id[] = {1, 1, 1};
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
@@ -242,42 +262,59 @@ void create_data_response(Message_t *message, const size_t num_elements)
             r->date = 10 * i + j;
 
             // QTM: 0A 01 04
-            // QTM_t v = QTM_very_good; //(i * num_elements + j) % 5;
-            SL_t *v = calloc(1, sizeof(SL_t));
+            QTM_t v = (i * num_elements + j) % 5;
+            /*SL_t *v = calloc(1, sizeof(SL_t));
             v->b = 0.3;
             v->d = 0.2;
-            v->u = 0.4;
-            // OCTET_STRING_encode_der(&asn_DEF_QTM, &v, 10, 0, buff_write, &r->value);
-            // OCTET_STRING_encode_der(&asn_DEF_SL, v, 0, 0, buff_write, &r->value);
-            // der_encode(&asn_DEF_SL, v, buff_write, &r->value);
-            // xer_encode(&asn_DEF_SL, v, XER_F_BASIC, buff_write, &r->value);
-            uper_encode(&asn_DEF_SL, v, buff_write, &r->value);
-            ASN_STRUCT_FREE(asn_DEF_SL, v);
+            v->u = 0.4;*/
+
+            switch (encoding)
+            {
+            case BER:
+                der_encode(&asn_DEF_SL, &v, buff_write, &r->value);
+                break;
+            case XER:
+                xer_encode(&asn_DEF_SL, &v, XER_F_BASIC, buff_write, &r->value);
+                break;
+            case UPER:
+                uper_encode(&asn_DEF_SL, &v, buff_write, &r->value);
+                break;
+            default:
+                perror("Invalid encoding. Allowed values are; BER, XER or UPER.\n");
+                exit(1);
+                break;
+            }
+
+            // ASN_STRUCT_FREE(asn_DEF_SL, v);
             ASN_SET_ADD(&message->payload.choice.data_response.response.list, r);
         }
     }
 }
 
-struct _callback_arg {
-	uint8_t *buffer;
-	size_t offset;
-	size_t size;
+struct _callback_arg
+{
+    uint8_t *buffer;
+    size_t offset;
+    size_t size;
 };
 
-int buff_write(const void *buffer, size_t size, void *key) {
-	struct _callback_arg *arg = (struct _callback_arg *)key;
+int buff_write(const void *buffer, size_t size, void *key)
+{
+    struct _callback_arg *arg = (struct _callback_arg *)key;
 
-	if((arg->offset + size) >= arg->size) {
-		size_t nsize = (arg->size ? arg->size << 2 : 16) + size;
-		void *p = REALLOC(arg->buffer, nsize);
-		if(!p) return -1;
-		arg->buffer = (uint8_t *)p;
-		arg->size = nsize;
-	}
+    if ((arg->offset + size) >= arg->size)
+    {
+        size_t nsize = (arg->size ? arg->size << 2 : 16) + size;
+        void *p = REALLOC(arg->buffer, nsize);
+        if (!p)
+            return -1;
+        arg->buffer = (uint8_t *)p;
+        arg->size = nsize;
+    }
 
-	memcpy(arg->buffer + arg->offset, buffer, size);
-	arg->offset += size;
-	assert(arg->offset < arg->size);
+    memcpy(arg->buffer + arg->offset, buffer, size);
+    arg->offset += size;
+    assert(arg->offset < arg->size);
 
-	return 0;
+    return 0;
 }

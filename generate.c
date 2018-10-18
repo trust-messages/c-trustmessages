@@ -31,7 +31,7 @@ int main(int ac, char **av)
     }
     else if (0 == strcmp(messageType, "data-response"))
     {
-        create_data_response(message, 2000);
+        create_data_response(message, BER, 2000);
     }
     else if (0 == strcmp(messageType, "format-request"))
     {

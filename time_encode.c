@@ -5,12 +5,13 @@
 #include <time.h>
 #include <utils.h>
 
+static const int ITERATIONS = 10;
+
 int main(int ac, char **av)
 {
-
     if (ac < 2)
     {
-        fprintf(stderr, "Usage: %s <file.{ber,xml}> ...\n", av[0]);
+        fprintf(stderr, "Usage: %s <file.{ber,xer,uper}> ...\n", av[0]);
         exit(1);
     }
 
@@ -20,6 +21,25 @@ int main(int ac, char **av)
     {
         // 1: Read file contents
         const char *filename = av[i];
+        Encoding encoding;
+
+        if (endswith(filename, ".ber"))
+        {
+            encoding = BER;
+        }
+        else if (endswith(filename, ".xer"))
+        {
+            encoding = XER;
+        }
+        else if (endswith(filename, ".uper"))
+        {
+            encoding = UPER;
+        }
+        else
+        {
+            printf("Unknown file: %s\n", filename);
+            exit(1);
+        }
 
         FILE *fp = fopen(filename, "rb");
         if (!fp)
@@ -45,12 +65,25 @@ int main(int ac, char **av)
         // 2: Decode
         Message_t *message = 0;
         asn_dec_rval_t rval;
-        
-        if (endswith(filename, ".ber"))
+
+        switch (encoding)
+        {
+        case BER:
             rval = ber_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
-        else if (endswith(filename, ".xml"))
+            break;
+        case XER:
             rval = xer_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
+            break;
+        case UPER:
+            rval = uper_decode(0, &asn_DEF_Message, (void **)&message, buf, read, 0, 0);
+            break;
+        default:
+            perror("Invalid state: A valid encoding shout be set.\n");
+            exit(1);
+            break;
+        }
         free(buf);
+
         if (rval.code != RC_OK)
         {
             fprintf(stderr, "%s: Broken encoding at byte %ld\n", filename, rval.consumed);
@@ -59,10 +92,23 @@ int main(int ac, char **av)
 
         // 3: Measure
         Measurement_t m;
-        if (endswith(filename, ".ber"))
-            m = time_encode_der(message, 1000);
-        else if (endswith(filename, ".xml"))
-            m = time_encode_xer(message, 1000);
+
+        switch (encoding)
+        {
+        case BER:
+            m = time_encode_der(message, ITERATIONS);
+            break;
+        case XER:
+            m = time_encode_xer(message, ITERATIONS);
+            break;
+        case UPER:
+            m = time_encode_uper(message, ITERATIONS);
+            break;
+        default:
+            perror("Invalid state: A valid encoding shout be set.\n");
+            exit(1);
+            break;
+        }
 
         printf("%s, %Lf, %Lf, %ld\n", filename, m.average, m.total, fsize);
     }

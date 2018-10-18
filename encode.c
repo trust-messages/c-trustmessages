@@ -7,6 +7,31 @@
 
 int main(int ac, char **av)
 {
+    if (ac != 2 && ac != 3)
+    {
+        printf("Usage: %s <BER|XER|UPER> [file]\n", av[0]);
+        exit(1);
+    }
+
+    Encoding encoding;
+    if (strcmp(av[1], "BER") == 0)
+    {
+        encoding = BER;
+    }
+    else if (strcmp(av[1], "XER") == 0)
+    {
+        encoding = XER;
+    }
+    else if (strcmp(av[1], "UPER") == 0)
+    {
+        encoding = UPER;
+    }
+    else
+    {
+        printf("Usage: %s <BER|XER|UPER> [file]\n", av[0]);
+        exit(1);
+    }
+
     Message_t *message = calloc(1, sizeof(Message_t));
     if (!message)
     {
@@ -19,7 +44,7 @@ int main(int ac, char **av)
     // create_data_request_exp(message);
     // create_format_response(message);
     // create_fault(message);
-    create_data_response(message, 100);
+    create_data_response(message, encoding, 100);
 
     /* const Measurement_t m = time_encode_der(message, 100);
     // const Measurement_t m = time_encode_xer(message, 100);
@@ -28,19 +53,32 @@ int main(int ac, char **av)
 
     const char *filename;
     asn_enc_rval_t ec;
-    if (ac < 2)
+    if (ac == 2)
     {
         filename = "RAM";
         printf("Destination: RAM\n");
         FILE *dev_null = fopen("/dev/null", "w");
-        // ec = der_encode(&asn_DEF_Message, message, NULL, NULL);
-        // ec = der_encode(&asn_DEF_Message, message, write_out, dev_null);
-        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, dev_null);
-        ec = uper_encode(&asn_DEF_Message, message, write_out, dev_null);
+        
+        switch (encoding)
+        {
+        case BER:
+            ec = der_encode(&asn_DEF_Message, message, write_out, dev_null);
+            break;
+        case XER:
+            ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, dev_null);
+            break;
+        case UPER:
+            uper_encode(&asn_DEF_Message, message, write_out, dev_null);
+            break;
+        default:
+            perror("Invalid encoding. Allowed values are; BER, XER or UPER.\n");
+            exit(1);
+            break;
+        }
     }
-    else
+    else // 3
     {
-        filename = av[1];
+        filename = av[2];
         FILE *fp = fopen(filename, "wb");
         if (!fp)
         {
@@ -49,9 +87,23 @@ int main(int ac, char **av)
         }
 
         printf("Destination: %s\n", filename);
-        // ec = der_encode(&asn_DEF_Message, message, write_out, fp);
-        // ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
-        ec = uper_encode(&asn_DEF_Message, message, write_out, fp);
+        switch (encoding)
+        {
+        case BER:
+            ec = der_encode(&asn_DEF_Message, message, write_out, fp);
+            break;
+        case XER:
+            ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
+            break;
+        case UPER:
+            ec = uper_encode(&asn_DEF_Message, message, write_out, fp);
+            // ec.encoded = (ec.encoded + 7) / 8;
+            break;
+        default:
+            perror("Invalid encoding. Allowed values are; BER, XER or UPER.\n");
+            exit(1);
+            break;
+        }
         fclose(fp);
     }
 

@@ -1,6 +1,13 @@
 #include <sys/time.h>
 #include <Message.h>
 
+typedef enum encoding
+{
+    BER,
+    XER,
+    UPER
+} Encoding;
+
 typedef struct measurement
 {
     long double total;
@@ -21,6 +28,10 @@ Measurement_t time_encode_der(
     Message_t *message,
     const size_t iterations);
 
+Measurement_t time_encode_uper(
+    Message_t *message,
+    const size_t iterations);
+
 Measurement_t time_encode_xer(
     Message_t *message,
     const size_t iterations);
@@ -37,4 +48,4 @@ void create_format_response(Message_t *message);
 
 void create_fault(Message_t *message);
 
-void create_data_response(Message_t *message, const size_t num_elements);
+void create_data_response(Message_t *message, Encoding encoding, const size_t num_elements);
