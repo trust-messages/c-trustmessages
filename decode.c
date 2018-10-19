@@ -32,6 +32,25 @@ int main(int ac, char **av)
         exit(1);
     }
 
+    Encoding encoding;
+    if (endswith(filename, ".ber"))
+    {
+        encoding = BER;
+    }
+    else if (endswith(filename, ".xer"))
+    {
+        encoding = XER;
+    }
+    else if (endswith(filename, ".uper"))
+    {
+        encoding = UPER;
+    }
+    else
+    {
+        printf("Unknown file: %s\n", filename);
+        exit(1);
+    }
+
     // file size in bytes
     fseek(fp, 0, SEEK_END);
     const size_t fsize = ftell(fp);
@@ -60,9 +79,31 @@ int main(int ac, char **av)
 
     // decode
     Message_t *message = 0; // Type to decode: remember 0!
-    gettimeofday(&start, NULL);
-    asn_dec_rval_t rval = ber_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
-    gettimeofday(&stop, NULL);
+    asn_dec_rval_t rval;
+
+    switch (encoding)
+    {
+    case BER:
+        gettimeofday(&start, NULL);
+        rval = ber_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
+        gettimeofday(&stop, NULL);
+        break;
+    case XER:
+        gettimeofday(&start, NULL);
+        rval = xer_decode(0, &asn_DEF_Message, (void **)&message, buf, read);
+        gettimeofday(&stop, NULL);
+        break;
+    case UPER:
+        gettimeofday(&start, NULL);
+        rval = uper_decode(0, &asn_DEF_Message, (void **)&message, buf, read, 0, 0);
+        gettimeofday(&stop, NULL);
+        break;
+    default:
+        perror("Invalid state: A valid encoding shout be set.\n");
+        exit(1);
+        break;
+    }
+
     printf("decode: %Lf\n", duration(&start, &stop));
 
     if (rval.code != RC_OK)
