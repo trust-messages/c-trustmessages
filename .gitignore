@@ -6,3 +6,4 @@ generate
 time_decode
 time_encode
 .vscode/
+*.dot

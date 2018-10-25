@@ -111,7 +111,7 @@ libsomething_la_SOURCES=$(ASN_MODULE_SOURCES) $(ASN_MODULE_HEADERS)
 # Remove the lines below to convert it into a pure .am file
 # TARGET = decoder
 CFLAGS += -I.
-# CFLAGS += -Ofast
+CFLAGS += -Ofast
 # CFLAGS += -g # debug
 CFLAGS += -pg # profile
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
