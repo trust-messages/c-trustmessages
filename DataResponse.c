@@ -146,7 +146,7 @@ asn_TYPE_descriptor_t asn_DEF_type_4 = {
 	&asn_SPC_type_specs_4	/* Additional specs */
 };
 
-static asn_TYPE_member_t asn_MBR_response_8[] = {
+static asn_TYPE_member_t asn_MBR_response_7[] = {
 	{ ATF_POINTER, 0, 0,
 		(ASN_TAG_CLASS_APPLICATION | (4 << 2)),
 		0,
@@ -157,16 +157,16 @@ static asn_TYPE_member_t asn_MBR_response_8[] = {
 		""
 		},
 };
-static const ber_tlv_tag_t asn_DEF_response_tags_8[] = {
+static const ber_tlv_tag_t asn_DEF_response_tags_7[] = {
 	(ASN_TAG_CLASS_UNIVERSAL | (16 << 2))
 };
-static asn_SET_OF_specifics_t asn_SPC_response_specs_8 = {
+static asn_SET_OF_specifics_t asn_SPC_response_specs_7 = {
 	sizeof(struct DataResponse__response),
 	offsetof(struct DataResponse__response, _asn_ctx),
 	0,	/* XER encoding is XMLDelimitedItemList */
 };
 static /* Use -fall-defs-global to expose */
-asn_TYPE_descriptor_t asn_DEF_response_8 = {
+asn_TYPE_descriptor_t asn_DEF_response_7 = {
 	"response",
 	"response",
 	SEQUENCE_OF_free,
@@ -179,16 +179,16 @@ asn_TYPE_descriptor_t asn_DEF_response_8 = {
 	SEQUENCE_OF_decode_uper,
 	SEQUENCE_OF_encode_uper,
 	0,	/* Use generic outmost tag fetcher */
-	asn_DEF_response_tags_8,
-	sizeof(asn_DEF_response_tags_8)
-		/sizeof(asn_DEF_response_tags_8[0]), /* 1 */
-	asn_DEF_response_tags_8,	/* Same as above */
-	sizeof(asn_DEF_response_tags_8)
-		/sizeof(asn_DEF_response_tags_8[0]), /* 1 */
+	asn_DEF_response_tags_7,
+	sizeof(asn_DEF_response_tags_7)
+		/sizeof(asn_DEF_response_tags_7[0]), /* 1 */
+	asn_DEF_response_tags_7,	/* Same as above */
+	sizeof(asn_DEF_response_tags_7)
+		/sizeof(asn_DEF_response_tags_7[0]), /* 1 */
 	0,	/* No PER visible constraints */
-	asn_MBR_response_8,
+	asn_MBR_response_7,
 	1,	/* Single element */
-	&asn_SPC_response_specs_8	/* Additional specs */
+	&asn_SPC_response_specs_7	/* Additional specs */
 };
 
 static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
@@ -219,19 +219,10 @@ static asn_TYPE_member_t asn_MBR_DataResponse_1[] = {
 		0,
 		"type"
 		},
-	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, provider),
-		(ASN_TAG_CLASS_UNIVERSAL | (22 << 2)),
-		0,
-		&asn_DEF_Entity,
-		0,	/* Defer constraints checking to the member type */
-		0,	/* No PER visible constraints */
-		0,
-		"provider"
-		},
 	{ ATF_NOFLAGS, 0, offsetof(struct DataResponse, response),
 		(ASN_TAG_CLASS_UNIVERSAL | (16 << 2)),
 		0,
-		&asn_DEF_response_8,
+		&asn_DEF_response_7,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
 		0,
@@ -246,14 +237,13 @@ static const asn_TYPE_tag2member_t asn_MAP_DataResponse_tag2el_1[] = {
     { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* rid */
     { (ASN_TAG_CLASS_UNIVERSAL | (6 << 2)), 1, 0, 0 }, /* format */
     { (ASN_TAG_CLASS_UNIVERSAL | (10 << 2)), 2, 0, 0 }, /* type */
-    { (ASN_TAG_CLASS_UNIVERSAL | (16 << 2)), 4, 0, 0 }, /* response */
-    { (ASN_TAG_CLASS_UNIVERSAL | (22 << 2)), 3, 0, 0 } /* provider */
+    { (ASN_TAG_CLASS_UNIVERSAL | (16 << 2)), 3, 0, 0 } /* response */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_DataResponse_specs_1 = {
 	sizeof(struct DataResponse),
 	offsetof(struct DataResponse, _asn_ctx),
 	asn_MAP_DataResponse_tag2el_1,
-	5,	/* Count of tags in the map */
+	4,	/* Count of tags in the map */
 	0, 0, 0,	/* Optional elements (not needed) */
 	-1,	/* Start extensions */
 	-1	/* Stop extensions */
@@ -279,7 +269,7 @@ asn_TYPE_descriptor_t asn_DEF_DataResponse = {
 		/sizeof(asn_DEF_DataResponse_tags_1[0]), /* 2 */
 	0,	/* No PER visible constraints */
 	asn_MBR_DataResponse_1,
-	5,	/* Elements count */
+	4,	/* Elements count */
 	&asn_SPC_DataResponse_specs_1	/* Additional specs */
 };
 

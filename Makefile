@@ -113,7 +113,7 @@ libsomething_la_SOURCES=$(ASN_MODULE_SOURCES) $(ASN_MODULE_HEADERS)
 CFLAGS += -I.
 CFLAGS += -Ofast
 # CFLAGS += -g # debug
-# CFLAGS += -pg # profile
+CFLAGS += -pg # profile
 OBJS=${ASN_MODULE_SOURCES:.c=.o}
 
 all: decode encode generate ber2xml time_decode time_encode
