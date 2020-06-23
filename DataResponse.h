@@ -15,7 +15,6 @@
 #include <NativeInteger.h>
 #include "Format.h"
 #include <NativeEnumerated.h>
-#include "Entity.h"
 #include <asn_SEQUENCE_OF.h>
 #include <constr_SEQUENCE_OF.h>
 #include <constr_SEQUENCE.h>
@@ -38,7 +37,6 @@ typedef struct DataResponse {
 	long	 rid;
 	Format_t	 format;
 	long	 type;
-	Entity_t	 provider;
 	struct DataResponse__response {
 		A_SEQUENCE_OF(struct Rating) list;
 		

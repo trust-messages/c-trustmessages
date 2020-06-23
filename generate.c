@@ -31,7 +31,8 @@ int main(int ac, char **av)
     }
     else if (0 == strcmp(messageType, "data-response"))
     {
-        create_data_response(message, BER, 2000);
+        create_data_response(message, BER, 1);
+        // create_data_response(message, BER, 2000);
     }
     else if (0 == strcmp(messageType, "format-request"))
     {
@@ -64,7 +65,7 @@ int main(int ac, char **av)
     {
         ec = der_encode(&asn_DEF_Message, message, write_out, fp);
     }
-    else if (endswith(filename, ".xml"))
+    else if (endswith(filename, ".xer"))
     {
         ec = xer_encode(&asn_DEF_Message, message, XER_F_BASIC, write_out, fp);
     }

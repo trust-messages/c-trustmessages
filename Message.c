@@ -7,12 +7,12 @@
 
 #include "Message.h"
 
-static asn_per_constraints_t asn_PER_type_payload_constr_3 GCC_NOTUSED = {
+static asn_per_constraints_t asn_PER_type_payload_constr_5 GCC_NOTUSED = {
 	{ APC_CONSTRAINED,	 3,  3,  0,  4 }	/* (0..4) */,
 	{ APC_UNCONSTRAINED,	-1, -1,  0,  0 },
 	0, 0	/* No PER value map */
 };
-static asn_TYPE_member_t asn_MBR_payload_3[] = {
+static asn_TYPE_member_t asn_MBR_payload_5[] = {
 	{ ATF_NOFLAGS, 0, offsetof(struct Message__payload, choice.data_request),
 		(ASN_TAG_CLASS_APPLICATION | (2 << 2)),
 		0,
@@ -59,26 +59,26 @@ static asn_TYPE_member_t asn_MBR_payload_3[] = {
 		"fault"
 		},
 };
-static const int asn_MAP_payload_cmap_3[] = { 2, 3, 0, 1, 4 };
-static const asn_TYPE_tag2member_t asn_MAP_payload_tag2el_3[] = {
+static const int asn_MAP_payload_cmap_5[] = { 2, 3, 0, 1, 4 };
+static const asn_TYPE_tag2member_t asn_MAP_payload_tag2el_5[] = {
     { (ASN_TAG_CLASS_APPLICATION | (0 << 2)), 2, 0, 0 }, /* format-request */
     { (ASN_TAG_CLASS_APPLICATION | (1 << 2)), 3, 0, 0 }, /* format-response */
     { (ASN_TAG_CLASS_APPLICATION | (2 << 2)), 0, 0, 0 }, /* data-request */
     { (ASN_TAG_CLASS_APPLICATION | (3 << 2)), 1, 0, 0 }, /* data-response */
     { (ASN_TAG_CLASS_APPLICATION | (7 << 2)), 4, 0, 0 } /* fault */
 };
-static asn_CHOICE_specifics_t asn_SPC_payload_specs_3 = {
+static asn_CHOICE_specifics_t asn_SPC_payload_specs_5 = {
 	sizeof(struct Message__payload),
 	offsetof(struct Message__payload, _asn_ctx),
 	offsetof(struct Message__payload, present),
 	sizeof(((struct Message__payload *)0)->present),
-	asn_MAP_payload_tag2el_3,
+	asn_MAP_payload_tag2el_5,
 	5,	/* Count of tags in the map */
-	asn_MAP_payload_cmap_3,	/* Canonically sorted */
+	asn_MAP_payload_cmap_5,	/* Canonically sorted */
 	-1	/* Extensions start */
 };
 static /* Use -fall-defs-global to expose */
-asn_TYPE_descriptor_t asn_DEF_payload_3 = {
+asn_TYPE_descriptor_t asn_DEF_payload_5 = {
 	"payload",
 	"payload",
 	CHOICE_free,
@@ -95,10 +95,10 @@ asn_TYPE_descriptor_t asn_DEF_payload_3 = {
 	0,	/* No effective tags (count) */
 	0,	/* No tags (pointer) */
 	0,	/* No tags (count) */
-	&asn_PER_type_payload_constr_3,
-	asn_MBR_payload_3,
+	&asn_PER_type_payload_constr_5,
+	asn_MBR_payload_5,
 	5,	/* Elements count */
-	&asn_SPC_payload_specs_3	/* Additional specs */
+	&asn_SPC_payload_specs_5	/* Additional specs */
 };
 
 static asn_TYPE_member_t asn_MBR_Message_1[] = {
@@ -111,10 +111,28 @@ static asn_TYPE_member_t asn_MBR_Message_1[] = {
 		0,
 		"version"
 		},
+	{ ATF_NOFLAGS, 0, offsetof(struct Message, caller),
+		(ASN_TAG_CLASS_UNIVERSAL | (22 << 2)),
+		0,
+		&asn_DEF_Entity,
+		0,	/* Defer constraints checking to the member type */
+		0,	/* No PER visible constraints */
+		0,
+		"caller"
+		},
+	{ ATF_NOFLAGS, 0, offsetof(struct Message, callee),
+		(ASN_TAG_CLASS_UNIVERSAL | (22 << 2)),
+		0,
+		&asn_DEF_Entity,
+		0,	/* Defer constraints checking to the member type */
+		0,	/* No PER visible constraints */
+		0,
+		"callee"
+		},
 	{ ATF_NOFLAGS, 0, offsetof(struct Message, payload),
 		-1 /* Ambiguous tag (CHOICE?) */,
 		0,
-		&asn_DEF_payload_3,
+		&asn_DEF_payload_5,
 		0,	/* Defer constraints checking to the member type */
 		0,	/* No PER visible constraints */
 		0,
@@ -126,17 +144,19 @@ static const ber_tlv_tag_t asn_DEF_Message_tags_1[] = {
 };
 static const asn_TYPE_tag2member_t asn_MAP_Message_tag2el_1[] = {
     { (ASN_TAG_CLASS_UNIVERSAL | (2 << 2)), 0, 0, 0 }, /* version */
-    { (ASN_TAG_CLASS_APPLICATION | (0 << 2)), 1, 0, 0 }, /* format-request */
-    { (ASN_TAG_CLASS_APPLICATION | (1 << 2)), 1, 0, 0 }, /* format-response */
-    { (ASN_TAG_CLASS_APPLICATION | (2 << 2)), 1, 0, 0 }, /* data-request */
-    { (ASN_TAG_CLASS_APPLICATION | (3 << 2)), 1, 0, 0 }, /* data-response */
-    { (ASN_TAG_CLASS_APPLICATION | (7 << 2)), 1, 0, 0 } /* fault */
+    { (ASN_TAG_CLASS_UNIVERSAL | (22 << 2)), 1, 0, 1 }, /* caller */
+    { (ASN_TAG_CLASS_UNIVERSAL | (22 << 2)), 2, -1, 0 }, /* callee */
+    { (ASN_TAG_CLASS_APPLICATION | (0 << 2)), 3, 0, 0 }, /* format-request */
+    { (ASN_TAG_CLASS_APPLICATION | (1 << 2)), 3, 0, 0 }, /* format-response */
+    { (ASN_TAG_CLASS_APPLICATION | (2 << 2)), 3, 0, 0 }, /* data-request */
+    { (ASN_TAG_CLASS_APPLICATION | (3 << 2)), 3, 0, 0 }, /* data-response */
+    { (ASN_TAG_CLASS_APPLICATION | (7 << 2)), 3, 0, 0 } /* fault */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_Message_specs_1 = {
 	sizeof(struct Message),
 	offsetof(struct Message, _asn_ctx),
 	asn_MAP_Message_tag2el_1,
-	6,	/* Count of tags in the map */
+	8,	/* Count of tags in the map */
 	0, 0, 0,	/* Optional elements (not needed) */
 	-1,	/* Start extensions */
 	-1	/* Stop extensions */
@@ -162,7 +182,7 @@ asn_TYPE_descriptor_t asn_DEF_Message = {
 		/sizeof(asn_DEF_Message_tags_1[0]), /* 1 */
 	0,	/* No PER visible constraints */
 	asn_MBR_Message_1,
-	2,	/* Elements count */
+	4,	/* Elements count */
 	&asn_SPC_Message_specs_1	/* Additional specs */
 };
 

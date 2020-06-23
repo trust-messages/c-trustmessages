@@ -200,6 +200,10 @@ int write_out(const void *buffer, size_t size, void *app_key)
 void create_format_request(Message_t *message)
 {
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_format_request;
     message->payload.choice.format_request = 73;
 }
@@ -209,6 +213,10 @@ void create_data_request(Message_t *message)
     const char *service_name = "Hello Service";
 
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_data_request;
     message->payload.choice.data_request.rid = 10;
     message->payload.choice.data_request.type = DataRequest__type_assessment;
@@ -221,6 +229,10 @@ void create_data_request(Message_t *message)
 void create_data_request_exp(Message_t *message)
 {
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_data_request;
     message->payload.choice.data_request.rid = 11;
 
@@ -251,6 +263,10 @@ void create_format_response(Message_t *message)
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_format_response;
     message->payload.choice.format_response.rid = 1;
 
@@ -270,6 +286,10 @@ void create_fault(Message_t *message)
     char *description = "We're out of beer, sorry.";
 
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_fault;
     message->payload.choice.fault.rid = 1;
     OCTET_STRING_fromString(&message->payload.choice.fault.message, description);
@@ -283,11 +303,15 @@ void create_data_response(Message_t *message, Encoding encoding, const size_t nu
     const size_t def_len = sizeof(def_id) / sizeof(def_id[0]);
 
     message->version = 1;
+    char *identity1 = "1234567890ABCDEF";
+    char *identity2 = "ABCDEF1234567890";
+    OCTET_STRING_fromString(&message->caller, identity1);
+    OCTET_STRING_fromString(&message->callee, identity2);
     message->payload.present = Message__payload_PR_data_response;
     message->payload.choice.data_response.rid = 11;
     message->payload.choice.data_response.type = DataResponse__type_assessment;
     OBJECT_IDENTIFIER_set_arcs(&message->payload.choice.data_response.format, def_id, sizeof(def_id[0]), def_len);
-    OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
+    // OCTET_STRING_fromString(&message->payload.choice.data_response.provider, "Some provider");
 
     // init PRG
     srand48(time(NULL));
@@ -316,7 +340,8 @@ void create_data_response(Message_t *message, Encoding encoding, const size_t nu
             switch (encoding)
             {
             case BER:
-                der_encode(&asn_DEF_SL, &v, buff_write, &r->value);
+                der_encode(&asn_DEF_QTM, &v, buff_write, &r->value);
+                // der_encode(&asn_DEF_SL, &v, buff_write, &r->value);
                 break;
             case XER:
                 xer_encode(&asn_DEF_SL, &v, XER_F_BASIC, buff_write, &r->value);

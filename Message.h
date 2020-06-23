@@ -13,6 +13,7 @@
 
 /* Including external dependencies */
 #include <NativeInteger.h>
+#include "Entity.h"
 #include "DataRequest.h"
 #include "DataResponse.h"
 #include "FormatRequest.h"
@@ -38,6 +39,8 @@ typedef enum Message__payload_PR {
 /* Message */
 typedef struct Message {
 	long	 version;
+	Entity_t	 caller;
+	Entity_t	 callee;
 	struct Message__payload {
 		Message__payload_PR present;
 		union Message__payload_u {
