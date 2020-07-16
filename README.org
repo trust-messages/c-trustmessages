@@ -1,8 +1,7 @@
 * Trust messages in C
-** Introduction
-TODO
+Trust messages for C programming language. The message were generated using the ASN.1 schema from the [[https://github.com/trust-messages/asn1-messages][ASN.1 messages]] project using [[https://github.com/vlm/asn1c][asn1c library]].
 
-** Profiling
+** Misc: Profiling
 1. Compile: =make -j=
 2. Run the program, e.g. =./time_decode a.ber=
 3. Optionally, rename the gmon.out to something more descriptive, like
